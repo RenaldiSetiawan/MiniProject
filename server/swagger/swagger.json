@@ -1,0 +1,205 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "MiniProject Fullstack",
+        "description": "",
+        "version": "1.0"
+    },
+    "host": "localhost:3000",
+    "basePath": "/api",
+    "tags": [
+        {
+            "name": "tr",
+            "description": "MinPro-Fullstack Code ID",
+            "externalDocs": {
+                "description": "Find out more",
+                "url": "http://swagger.io"
+            }
+        }
+    ],
+    "schemes": [
+        "http",
+        "https"
+    ],
+    "paths": {
+        "/tours/": {
+            "post": {
+                "tags": [
+                    "tours"
+                ],
+                "summary": "Add a new tours",
+                "description": "",
+                "operationId": "addTours",
+                "consumes": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Tours object create to db",
+                        "required": true,
+                        "schema": {
+                            "$ref": "http://localhost:3000/tr/swagger/tours.json#/components/schemas/tours"
+                        }
+                    }
+                ],
+                "responses": {
+                    "405": {
+                        "description": "Invalid input"
+                    }
+                }
+            },
+            "get": {
+                "tags": [
+                    "tours"
+                ],
+                "summary": "Finds Tours by status",
+                "description": "...",
+                "operationId": "find all tours",
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "parameters": [
+                    
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "type": "array"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid status value"
+                    }
+                }
+            }
+        },
+        "/tours/{id}": {
+            "put": {
+                "tags": [
+                    "tours"
+                ],
+                "summary": "Update an existing tours",
+                "description": "",
+                "operationId": "updateTours",
+                "consumes": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Update Tours ",
+                        "required": true,
+                        "type": "string"
+                      },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Tours object create to db",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Tours"
+                        }
+                    }
+                ],
+                "responses": {
+                    "400": {
+                        "description": "Invalid ID supplied"
+                    },
+                    "404": {
+                        "description": "Tours not found"
+                    },
+                    "405": {
+                        "description": "Validation exception"
+                    }
+                }
+            },
+            "get": {
+                "tags": [
+                    "Tours"
+                ],
+                "summary": "find an existing tours",
+                "description": "",
+                "operationId": "updateTours",
+                "consumes": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Find Tours ",
+                        "required": true,
+                        "type": "integer"
+                      }
+                ],
+                "responses": {
+                    "400": {
+                        "description": "Invalid ID supplied"
+                    },
+                    "404": {
+                        "description": "Tours not found"
+                    },
+                    "405": {
+                        "description": "Validation exception"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Tours"
+                ],
+                "summary": "delete an existing tours",
+                "description": "",
+                "operationId": "updateTours",
+                "consumes": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Delete Tours",
+                        "required": true,
+                        "type": "integer"
+                      }
+                ],
+                "responses": {
+                    "400": {
+                        "description": "Invalid ID supplied"
+                    },
+                    "404": {
+                        "description": "Tours not found"
+                    },
+                    "405": {
+                        "description": "Validation exception"
+                    }
+                }
+            }
+        } 
+    }
+}

@@ -1,0 +1,46 @@
+{
+    "components": {
+        "schemas": {
+            "tours": {
+                "properties": {
+                    "tour_name": {
+                        "type": "string",
+                        "example" : "Asia Tours"
+                    },
+                    "tour_route": {
+                        "type": "string",
+                        "example" : "Asia-Eropa"
+                    },
+                    "tour_package": {
+                        "type":"string",
+                        "example" : "Anak-Anak"
+                    },
+                    "tour_schedule": {
+                        "type":"date",
+                        "example" : "2021-05-29"
+                    },
+                    "tour_price": {
+                        "type":"string",
+                        "example" : "1500000"
+                    },
+                    "tour_hotel": {
+                        "type":"string",
+                        "example" : "4"
+                    },
+                    "tour_pesawat": {
+                        "type":"string",
+                        "example" : "Cathay"
+                    },
+                    "tour_description": {
+                        "type":"string",
+                        "example" : "Description Tours"
+                    },
+                    "tour_user_id": {
+                        "type":"string",
+                        "example" : "11/12/13"
+                    }
+                }
+            }
+        }
+    }
+}
