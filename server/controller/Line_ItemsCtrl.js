@@ -12,49 +12,56 @@ const findOne = async (req, res) => {
   return res.send(line_items);
 };
 
-// Create new Table
 const create = async (req, res) => {
-  const line_items = await req.context.models.Line_Items.create({
-    lite_id: req.body.lite_id,
-    lite_qty: req.body.lite_qty,
-    lite_status: req.body.lite_status,
-    lite_tour_id: req.body.lite_tour_id,
-    lite_toca_id: req.body.lite_toca_id,
-    lite_order_name: req.body.lite_order_name,
-    lite_toca_id: req.body.lite_toca_id,
-    lite_tour_id: req.body.lite_tour_id
+  const tours = req.tours
+  let tours_cart;
+  if (req.cekCart) {
+     tours_cart = req.cekCart
+  } else {
+     tours_cart = req.tocart
+  }
+  
+  try {
+    const item = await req.context.models.Line_Items.create(
+      {
+        lite_qty: req.body.lite_qty,
+        lite_status: 'cart',
+        lite_tour_id: tours.tour_id,
+        lite_toca_id: tours_cart.toca_id,
+      })
+    return res.send(item)
+  } catch (error) {
+    return res.send(error);
+  }
+}
 
-  });
+// UPDATE
+const update = async (req, res) => {
+  const { lite_qty, lite_status } = req.body;
+
+  const line_items = await req.context.models.Line_Items.update(
+    //nama atribut yang akan di update
+    {
+      lite_qty: lite_qty,
+      lite_status: lite_status,
+    },
+    { returning: true, where: { lite_id: req.params.id } }
+  );
   return res.send(line_items);
 };
 
-// UPDATE
-// const update = async (req, res) => {
-//   const { toca_created_on, toca_status } = req.body;
-
-//   const tours_cart = await req.context.models.Tours_Cart.update(
-//     //nama atribut yang akan di update
-//     {
-//       toca_created_on: toca_created_on,
-//       toca_status: toca_status,
-//     },
-//     { returning: true, where: { toca_id: req.params.id } }
-//   );
-//   return res.send(tours_cart);
-// };
-
-// // DELETE
-// const remove = async (req, res) => {
-//   const tours_cart = await req.context.models.Tours_Cart.destroy({
-//     where: { toca_id: req.params.id },
-//   });
-//   return res.send(true);
-// };
+// DELETE
+const remove = async (req, res) => {
+  const line_items = await req.context.models.Line_Items.destroy({
+    where: { lite_id: req.params.id },
+  });
+  return res.send("Delete LineItems was Successful");
+};
 
 export default {
   findAll,
   findOne,
   create,
-  // update,
-  // remove,
+  update,
+  remove
 };

@@ -1,4 +1,3 @@
-// findAll = select * from tour_commnents
 const findAll = async (req, res) => {
   const tours_comments = await req.context.models.Tours_Comments.findAll();
   return res.send(tours_comments);
@@ -45,7 +44,7 @@ const remove = async (req, res) => {
   const tours_comments = await req.context.models.Tours_Comments.destroy({
     where: { toco_id: req.params.id },
   });
-  return res.send(true);
+  return res.send("Delete ToursComments was Successful");
 };
 
 export default {

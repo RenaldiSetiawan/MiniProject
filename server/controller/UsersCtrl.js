@@ -2,14 +2,16 @@ import UsersHelper from "../helpers/UsersHelper";
 import config from "../../config/config";
 import jwt from "jsonwebtoken";
 import expressJwt from "express-jwt";
-import formidable from "formidable"; // untuk upload file 
-import fs from "fs"; // untuk Creat file direktori
+
+// untuk upload file 
+import formidable from "formidable";
+// untuk Creat file direktori
+import fs from "fs";
 
 //1.declare pathDir untuk menyimpan image di local storage
 const pathDir = __dirname + "../../../uploads/";
 
-
-// FINDALL = select * from users
+// find = select * from Table
 const findAll = async (req, res) => {
   const users = await req.context.models.Users.findAll({
     attributes: { exclude: ["user_password", "user_salt"] },
@@ -32,8 +34,8 @@ const findOne = async (req, res) => {
   return res.send(users);
 };
 
-// create user with hash & salt and Img WITH FORM DATA POSTMAN
-const signup = async (req, res) => {
+// create user with hash & salt and Img to form-data POSTMAN
+const signup = async (req, res, next) => {
 
   if (!fs.existsSync(pathDir)) {
     fs.mkdirSync(pathDir);
@@ -51,7 +53,8 @@ const signup = async (req, res) => {
       file.path = pathDir + file.name;
     })
     .parse(req, async (err, fields, files) => {
-      if (err) { // Jika Error IMG tidak bisa di upload
+      // Jika Error IMG tidak bisa di upload
+      if (err) {
         res.status(400).json({
           message: "Image tidak bisa diupload",
         });
@@ -77,26 +80,70 @@ const signup = async (req, res) => {
     });
 };
 
-// UPDATE From BODY-RAW Where Id
+//  Where Id
 const update = async (req, res) => {
-  const {
-    user_name,
-    user_email,
-    user_birthdate,
-    user_gender
-  } = req.body;
+  const { dataValues } = await req.context.models.Users.findOne({
+    where: { user_id: req.params.id },
+  });
 
-  const users = await req.context.models.Users.update(
-    //nama atribut yang akan di update
-    {
-      user_name: user_name,
-      user_email: user_email,
-      user_birthdate: user_birthdate,
-      user_gender: user_gender
-    },
-    { returning: true, where: { user_id: req.params.id } }
-  );
-  return res.send(users);
+  if (!fs.existsSync(pathDir)) {
+    fs.mkdirSync(pathDir);
+  }
+
+  const form = formidable({
+    multiples: true,
+    uploadDir: pathDir,
+    keepExtensions: true,
+  });
+
+  form
+    .on("fileBegin", (name, file) => {
+      file.path = pathDir + file.name;
+
+      if (dataValues.user_avatar) {
+        fs.unlinkSync(pathDir + "//" + dataValues.user_avatar);
+      }
+    })
+    .parse(req, async (err, fields, files) => {
+      if (err) {
+        res.status(400).json({
+          message: "Image tidak bisa diupload",
+        });
+      }
+
+      let users = new req.context.models.Users(fields);
+
+      if (users.user_password) {
+          users.user_salt = Auth.makeSalt();
+          users.user_password = Auth.hashPassword(
+          users.user_password,
+          users.user_salt
+        );
+      }
+
+      if (!users.user_id) {
+        users.user_id = req.params.id;
+      }
+
+      if (files.user_avatar) {
+        users.user_avatar = files.user_avatar.name;
+      }
+
+      try {
+        const result = await req.context.models.Users.update(users.dataValues, {
+          returning: true,
+          where: { user_id: req.params.id },
+        });
+
+        if (result[0]) {
+          return res.send("Update Done");
+        } else {
+          return res.send("Update Failed");
+        }
+      } catch (error) {
+        res.send(error.message);
+      }
+    });
 };
 
 // filter find by user_email
@@ -161,7 +208,7 @@ const signin = async (req, res) => {
 const signout = (req, res) => {
   res.clearCookie("t");
   return res.status("200").json({
-    message: "signed out",
+    message: "signed out successful",
   });
 };
 
@@ -176,8 +223,23 @@ const remove = async (req, res) => {
   const users = await req.context.models.Users.destroy({
     where: { user_id: req.params.id },
   });
-  return res.send(true);
+  return res.send("Delete User was Successful");
 };
+
+const cekUser = async (req, res, next) => {
+  try {
+    if (req.params.id===undefined || isNaN(req.params.id)) res.status(400).send({message: "User Id Wrong"})
+    const users = await req.context.models.Users.findOne({
+      where:{user_id: req.params.id}
+    })
+    req.cekUser = {
+      user_id: users.user_id
+    }
+    next()
+  } catch (error) {
+    
+  }
+}
 
 // Gunakan export default agar semua function bisa dipakai di file lain.
 export default {
@@ -189,4 +251,5 @@ export default {
   requireSignin,
   signout,
   remove,
+  cekUser
 };

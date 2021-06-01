@@ -72,10 +72,42 @@ const remove = async (req, res) => {
   return res.send(true);
 };
 
+/* const checkout = async(req, res)=>{
+  try {
+      const body = {
+          user_id: req.users.id,
+          order_name: req.body.order_name,
+          order_created_on: req.order_created_on,
+          tours_cart: req.body.tours_cart,
+          order_status: req.body.order_status,
+      }
+      await usecase.checkout(body)
+      res.status(200).json({
+          message: "success"
+      })
+  } catch (error) {
+      console.log("error", error)
+      res.status(500).json(error)
+  }
+} */
+
+/* const getAllOrdersByUsersId= async(req, res)=>{
+  try {
+      const data = await req.context.models.Orders.getAllOrdersByUsersId(req.users.id)
+      res.send(data)
+  } catch (error) {
+      console.log("asdf", error)
+      res.statusCode = 500
+      res.send(error)
+  }
+} */
+
 export default {
   findAll,
   findOne,
   create,
   update,
   remove,
+  /* checkout,
+  getAllOrdersByUsersId */
 };

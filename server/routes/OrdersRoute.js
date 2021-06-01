@@ -8,4 +8,6 @@ router.get("/:id", IndexCtrl.OrdersCtrl.findOne);
 router.put("/:id", IndexCtrl.OrdersCtrl.update);
 router.delete("/:id", IndexCtrl.OrdersCtrl.remove);
 
+// router.get("/:id", IndexCtrl.OrdersCtrl.getAllOrdersByUsersId);
+
 export default router;

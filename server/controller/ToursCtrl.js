@@ -1,4 +1,4 @@
-// findAll = select * from regions
+// findAll = select * table
 const findAll = async (req, res) => {
   const tours = await req.context.models.Tours.findAll({
 
@@ -78,8 +78,21 @@ const remove = async (req, res) => {
   const tours = await req.context.models.Tours.destroy({
     where: { tour_id: req.params.id },
   });
-  return res.send(true);
+  return res.send("Delete Tours was Successful");
 };
+
+const findOut = async (req, res, next) => {
+  try{
+    const tours = await req.context.models.Tours.findOne({
+      where: {tour_id: req.body.tour_id}
+    })
+    req.tours = tours;
+    next()
+  } catch (error) {
+    return res.status(500).send({message:`find tour ${erro}`})
+  }
+}
+
 
 export default {
   findAll,
@@ -87,4 +100,5 @@ export default {
   create,
   update,
   remove,
+  findOut
 };
