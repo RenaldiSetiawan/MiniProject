@@ -11,7 +11,8 @@ router.delete("/:id", IndexCtrl.Tours_ImagesCtrl.remove);
 //Create
 router.post("/multipart", IndexCtrl.Tours_ImagesCtrl.createFileType); 
 
-
+//Insert Multiple IMG
+// router.post("/tourIMG", IndexCtrl.Tours_ImagesCtrl.createFileType); 
 
 
 export default router;

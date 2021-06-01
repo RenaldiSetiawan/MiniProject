@@ -12,15 +12,33 @@ const findOne = async (req, res) => {
   return res.send(line_items);
 };
 
+const cekLite = async (req, res, next) => {
+  const cekLiteCart = req.tocart || req.cekCart
+  try {
+    const item = await req.context.models.Tours_Cart.findOne({
+      where: {
+        lite_tour_id: cekLiteCart.tour_id,
+        lite_toca_id: cekLiteCart.toca_id,
+        lite_status: 'cart'
+      },
+    });
+    req.liteitem = item
+    next()
+  } catch (error) {
+      return res.status(500).json({message: "Input Error"+error})
+  }
+}
+
+
 const create = async (req, res) => {
   const tours = req.tours
   let tours_cart;
   if (req.cekCart) {
-     tours_cart = req.cekCart
+    tours_cart = req.cekCart
   } else {
-     tours_cart = req.tocart
+    tours_cart = req.tocart
   }
-  
+
   try {
     const item = await req.context.models.Line_Items.create(
       {
@@ -35,7 +53,7 @@ const create = async (req, res) => {
   }
 }
 
-// UPDATE
+// UPDATE REQ BODY
 const update = async (req, res) => {
   const { lite_qty, lite_status } = req.body;
 
@@ -61,6 +79,7 @@ const remove = async (req, res) => {
 export default {
   findAll,
   findOne,
+  cekLite,
   create,
   update,
   remove

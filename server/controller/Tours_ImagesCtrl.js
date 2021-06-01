@@ -36,7 +36,7 @@ const remove = async (req, res) => {
   const tours_images = await req.context.models.Tours_Images.destroy({
     where: { toim_id: req.params.id },
   });
-  return res.send(true);
+  return res.send("Delete TourImages Success");
 };
 
 // UPDATE FIELD
@@ -85,7 +85,11 @@ Jika sudah maka keluar dari Kondisi */
 
       let tours_images = new req.context.models.Tours_Images(fields);
       if (files) {
-        tours_images.toim_filetype = files.toim_filetype.name;
+        
+        tours_images.toim_filename = files.toim_filetype.name;
+        tours_images.toim_filesize = files.toim_filetype.size;
+        tours_images.toim_filetype = files.toim_filetype.type;
+     
         console.log(tours_images);
       }
 
@@ -99,7 +103,35 @@ Jika sudah maka keluar dari Kondisi */
 });
 }
 
+/* const createTourImages = async (req, res, next) => {
 
+  const workingDir = process.cwd()+"/uploads/";
+
+   if (!fs.existsSync(workingDir)) {
+      fs.mkdirSync(workingDir);
+  } 
+
+  const form = formidable({
+      multiples: true,
+      uploadDir: workingDir,
+      keepExtensions: true
+  });
+
+  form
+  .on('fileBegin', function (name, file) {
+      file.path = workingDir + file.name;
+  })
+  .parse(req, async (err, fields, files) => {
+    if (err) { 
+      res.status(400).json({
+        message: "Image tidak bisa diupload",
+      });
+    }
+     const tours = fields;
+     const toursImages = files;
+  })
+}
+ */
 
 export default {
   findAll,
@@ -107,5 +139,6 @@ export default {
   create,
   remove,
   update,
-  createFileType
+  createFileType,
+  // createTourImages
 };

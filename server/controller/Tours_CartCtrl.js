@@ -1,3 +1,5 @@
+import {sequelize} from "../../config/config-db"
+
 const findAll = async (req, res) => {
   const tours_cart = await req.context.models.Tours_Cart.findAll({
   });
@@ -64,6 +66,22 @@ const create = async (req, res, next) => {
   }
 }
 
+const findQty = async (req, res, next) => {
+  try {
+    const sum = await sequelize.query(
+      'select count (lite_tour_id) as qty from line_items where (lite_toca_id=:liteid)',
+      {
+        replacements: {liteid:parseInt(query.toca_id)},
+        type: sequelize.QueryTypes.SELECT
+      }
+    )
+    req.all = sum[0]
+    next()
+  } catch (error) {
+    return res.status(500).json({message: "Find Error"+error})
+  }
+}
+
 // UPDATE
 const update = async (req, res) => {
   const { toca_created_on, toca_status } = req.body;
@@ -91,6 +109,7 @@ export default {
   findAll,
   findOne,
   create,
+  findQty,
   cekCart,
   update,
   remove,
