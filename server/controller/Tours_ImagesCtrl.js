@@ -18,19 +18,6 @@ const findOne = async (req, res) => {
   return res.send(tours_images);
 };
 
-// Create new Table
-const create = async (req, res) => {
-  const tours_images = await req.context.models.Tours_Images.create({
-    toim_id: req.body.toim_id,
-    toim_filename: req.body.toim_filename,
-    toim_filesize: req.body.toim_filesize,
-    toim_filetype: req.body.toim_filetype,
-    toim_primary: req.body.toim_primary,
-    toim_tour_id: req.body.toim_tour_id,
-  });
-  return res.send(tours_images);
-};
-
 // DELETE
 const remove = async (req, res) => {
   const tours_images = await req.context.models.Tours_Images.destroy({
@@ -103,42 +90,10 @@ Jika sudah maka keluar dari Kondisi */
 });
 }
 
-/* const createTourImages = async (req, res, next) => {
-
-  const workingDir = process.cwd()+"/uploads/";
-
-   if (!fs.existsSync(workingDir)) {
-      fs.mkdirSync(workingDir);
-  } 
-
-  const form = formidable({
-      multiples: true,
-      uploadDir: workingDir,
-      keepExtensions: true
-  });
-
-  form
-  .on('fileBegin', function (name, file) {
-      file.path = workingDir + file.name;
-  })
-  .parse(req, async (err, fields, files) => {
-    if (err) { 
-      res.status(400).json({
-        message: "Image tidak bisa diupload",
-      });
-    }
-     const tours = fields;
-     const toursImages = files;
-  })
-}
- */
-
 export default {
   findAll,
   findOne,
-  create,
   remove,
   update,
-  createFileType,
-  // createTourImages
+  createFileType
 };

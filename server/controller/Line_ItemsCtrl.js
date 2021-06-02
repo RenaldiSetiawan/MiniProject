@@ -12,12 +12,31 @@ const findOne = async (req, res) => {
   return res.send(line_items);
 };
 
+const cekLine = async (req,res,next) => {
+  const orders = req.orders || req.cekOrd
+  const closes = req.cekCart
+
+  for (const data of closes.line_items) {
+    try {
+      await req.context.models.Line_Items.update({
+        lite_status: 'checkout',
+        lite_order_name: orders.order_name
+      },
+      {return: true, where: {lite_id: data.lite_id}})
+    } catch (error) {
+      return res.send(error)
+    }
+  }
+  return res.send(orders)
+}
+
 const cekLite = async (req, res, next) => {
   const cekLiteCart = req.tocart || req.cekCart
+  const cekTours = req.tours
   try {
-    const item = await req.context.models.Tours_Cart.findOne({
+    const item = await req.context.models.Line_Items.findOne({
       where: {
-        lite_tour_id: cekLiteCart.tour_id,
+        lite_tour_id: cekTours.tour_id,
         lite_toca_id: cekLiteCart.toca_id,
         lite_status: 'cart'
       },
@@ -29,6 +48,18 @@ const cekLite = async (req, res, next) => {
   }
 }
 
+const updateLite = async (req,res) => {
+  try {
+    const cekLite = req.liteitem
+    const cekTours = req.tours
+    const item = await req.context.models.Line_Items.update({
+      lite_qty: req.body.lite_qty,
+    },{returning: true, where:{lite_id: cekLite.lite_id}})
+    return res.send(item)
+  } catch (error) {
+    return res.send(error)
+  }
+}
 
 const create = async (req, res) => {
   const tours = req.tours
@@ -53,21 +84,6 @@ const create = async (req, res) => {
   }
 }
 
-// UPDATE REQ BODY
-const update = async (req, res) => {
-  const { lite_qty, lite_status } = req.body;
-
-  const line_items = await req.context.models.Line_Items.update(
-    //nama atribut yang akan di update
-    {
-      lite_qty: lite_qty,
-      lite_status: lite_status,
-    },
-    { returning: true, where: { lite_id: req.params.id } }
-  );
-  return res.send(line_items);
-};
-
 // DELETE
 const remove = async (req, res) => {
   const line_items = await req.context.models.Line_Items.destroy({
@@ -80,7 +96,8 @@ export default {
   findAll,
   findOne,
   cekLite,
+  cekLine,
+  updateLite,
   create,
-  update,
   remove
 };

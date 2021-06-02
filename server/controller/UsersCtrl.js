@@ -230,11 +230,12 @@ const cekUser = async (req, res, next) => {
   try {
     if (req.params.id===undefined || isNaN(req.params.id)) res.status(400).send({message: "User Id Wrong"})
     const users = await req.context.models.Users.findOne({
+      include:[{
+        all:true
+      }],
       where:{user_id: req.params.id}
     })
-    req.cekUser = {
-      user_id: users.user_id
-    }
+    req.cekUser = users
     next()
   } catch (error) {
     

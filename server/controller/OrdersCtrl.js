@@ -69,10 +69,76 @@ const remove = async (req, res) => {
   const orders = await req.context.models.Orders.destroy({
     where: { order_name: req.params.id },
   });
-  return res.send(true);
+  return res.send("Delete Order Success");
 };
 
+const payment = async (req, res, next) => {
+  const prices = req.cekUser
+  const qty = req.all.qty
+  const payment = {}
+  let price = 0
+  let discount = 0
+  let tax = 0
+  let due = 0
+  for (const data of prices.tours) {
+    try {
+      price += parseInt(data.tour_price)
+      if (qty > 1) {
+        discount = 0.05 * price
+      }
+      tax = (price - discount) * 0.1
+      due = price - discount + tax
+      payment['price'] = price
+      payment['discount'] = discount
+      payment['tax'] = tax
+      payment['due'] = due
+    } catch (error) {
+      return res.status(500).json({ message: "Orders Error" + error })
+    }
+  }
+  req.payment = payment
+  next()
+}
 
+const cekOrd = async (req, res, next) => {
+  const users = req.cekUser
+  try {
+    const orders = await req.context.models.Orders.findOne({
+      where: {
+        order_user_id: users.user_id,
+        order_status: 'open'
+      },
+    });
+    req.cekOrd = orders
+    next()
+  } catch (error) {
+    return res.status(500).json({ message: "Input Error" + error })
+  }
+}
+
+const createOrd = async (req, res, next) => {
+  try {
+    const users = req.cekUser
+    const cekorder = req.cekOrd
+    if (!cekorder) {
+      const orders = await req.context.models.Orders.create({
+        order_total_children: req.payment.price,
+        order_discount: req.payment.discount,
+        order_tax: req.payment.tax,
+        order_total_due: req.payment.due,
+        order_total_qty: req.all.qty,
+        order_city: req.body.order_city,
+        order_address: req.body.order_address,
+        order_status: 'open',
+        order_user_id: users.user_id
+      })
+      req.orders = orders
+    }
+    next()
+  } catch (error) {
+    return res.status(500).json({ message: "Orders Error" + error })
+  }
+}
 
 /* const checkout = async(req, res)=>{
   try {
@@ -110,6 +176,9 @@ export default {
   create,
   update,
   remove,
+  payment,
+  cekOrd,
+  createOrd
   /* checkout,
   getAllOrdersByUsersId */
 };

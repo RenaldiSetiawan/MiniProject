@@ -8,11 +8,14 @@ router.get("/:id", IndexCtrl.OrdersCtrl.findOne);
 router.put("/:id", IndexCtrl.OrdersCtrl.update);
 router.delete("/:id", IndexCtrl.OrdersCtrl.remove);
 
-router.get('/:id', IndexCtrl.UsersCtrl.cekUser,
-                    IndexCtrl.Tours_CartCtrl.cekCart,
-                    IndexCtrl.Line_ItemsCtrl.cekLite,
-                    IndexCtrl.Tours_CartCtrl.findQty,
-)
+router.post('/ord/:id', IndexCtrl.UsersCtrl.cekUser,
+                        IndexCtrl.Tours_CartCtrl.cekCart,
+                        IndexCtrl.Tours_CartCtrl.findQty,
+                        IndexCtrl.OrdersCtrl.payment,
+                        IndexCtrl.OrdersCtrl.cekOrd,
+                        IndexCtrl.OrdersCtrl.createOrd,
+                        IndexCtrl.Tours_CartCtrl.closeCart,
+                        IndexCtrl.Line_ItemsCtrl.cekLine);
 
 // router.get("/:id", IndexCtrl.OrdersCtrl.getAllOrdersByUsersId);
 

@@ -80,3 +80,14 @@ CREATE TABLE line_items (
 	FOREIGN KEY (lite_toca_id) REFERENCES tours_cart (toca_id) ON UPDATE CASCADE ON DELETE CASCADE,
 	unique (lite_toca_id, lite_tour_id)
 );
+
+-- Sequence Number
+create sequence seq_ord
+increment 1
+minvalue 1
+maxvalue 9223372036854775807
+start 1
+
+create or replace function ord_id () returns varchar as $$
+select CONCAT('ORD',to_char(now(),'YYYYMMDD'),'-',lpad(''||nextval('seq_ord'),4,'0'))
+$$ language sql

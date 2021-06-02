@@ -23,6 +23,8 @@ const upload = async (req, res, next) => {
     .on("file", (keyName, file) => {
       console.log(keyName, file.name);
       req.fileName = file.name;
+      req.fileSize = file.size;
+      req.fileType = file.type;
     })
     .on("end", () => {
       console.log("-> upload to storage done");
