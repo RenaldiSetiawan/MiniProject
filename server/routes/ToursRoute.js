@@ -8,4 +8,5 @@ router.get("/:id", IndexCtrl.ToursCtrl.findOne);
 router.put("/:id", IndexCtrl.ToursCtrl.update); 
 router.delete("/:id", IndexCtrl.ToursCtrl.remove);
 
+
 export default router;

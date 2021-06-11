@@ -73,9 +73,9 @@ Jika sudah maka keluar dari Kondisi */
       let tours_images = new req.context.models.Tours_Images(fields);
       if (files) {
         
-        tours_images.toim_filename = files.toim_filetype.name;
-        tours_images.toim_filesize = files.toim_filetype.size;
-        tours_images.toim_filetype = files.toim_filetype.type;
+        tours_images.toim_filename = files.image.name;
+        tours_images.toim_filesize = files.image.size;
+        tours_images.toim_filetype = files.image.type;
      
         console.log(tours_images);
       }
@@ -90,10 +90,27 @@ Jika sudah maka keluar dari Kondisi */
 });
 }
 
+const photo = async (req, res, next) => {
+  const fileName = `${pathDir}/${req.params.filename}`
+
+  if (req.params.filename !== 'null') {
+      res.set("Content-Type", "image/jpeg")
+      return res.download(fileName);
+  }
+
+  next()
+}
+
+const defaultPhoto = (req, res) => {
+  return res.sendFile(process.cwd())
+}
+
 export default {
   findAll,
   findOne,
   remove,
   update,
-  createFileType
+  createFileType,
+  photo,
+  defaultPhoto
 };

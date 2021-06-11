@@ -9,8 +9,11 @@
    > yarn install
    > yarn start, untuk running/debug applikasi
    > yarn reverse:db, untuk reverse tables di db menjadi models
+   > yarn test, untuk testing unit 
+     -yarn add mocha chai chai-http -D
+     -yarn add @babel/register -D
    
-5. Test (http://localhost:3000/api/regions/) di postman
+5. Test (http://localhost:3000/api/tours/) di postman
    
 ---- 
 

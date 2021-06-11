@@ -1,14 +1,18 @@
 // findAll = select * table
 const findAll = async (req, res) => {
   const tours = await req.context.models.Tours.findAll({
-
-   /*  Join 1 Tabel
     include: [
       {
-        model: req.context.models.Users
+        all: true,
       },
-    ], */
-    
+    ],
+    // Urut Berdasarka
+    order: [
+      ['tour_id', 'ASC'],
+      ['tour_name', 'DESC'],
+    ],
+    // nama field yang tidak ditampilkan
+    // attributes: { exclude: ['tour_user_id', 'tour_schedule'] },
   });
   return res.send(tours);
 };
@@ -82,14 +86,14 @@ const remove = async (req, res) => {
 };
 
 const findOut = async (req, res, next) => {
-  try{
+  try {
     const tours = await req.context.models.Tours.findOne({
-      where: {tour_id: req.body.tour_id}
+      where: { tour_id: req.body.tour_id }
     })
     req.tours = tours;
     next()
   } catch (error) {
-    return res.status(500).send({message:`find tour ${erro}`})
+    return res.status(500).send({ message: `find tour ${erro}` })
   }
 }
 
