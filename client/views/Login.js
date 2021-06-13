@@ -43,9 +43,9 @@ export default function Login(props) {
         if (values.redirect) {
             /* console.log('redirect : '||{from}) */
             if (tours.users.user_type === "admin") {
-                history.push("/tr/tours");
+                history.push("/tourtravel/tours");
             } else {
-                history.push("/tr/landing");
+                history.push("/tourtravel/landing");
             }
         }
     }, [tours]);
@@ -63,32 +63,39 @@ export default function Login(props) {
                             <button className="bg-transparent text-gray-900  p-2 rounded border border-white mr-4 hover:bg-gray-100 hover:text-gray-900">
                                 Sign in
                             </button>
-                            <Link to="/tr/register">
                             <button className="bg-transparent text-gray-900  p-2 rounded border border-white mr-4 hover:bg-gray-100 hover:text-gray-900">
-                                
+                                <Link to="/tourtravel/register">
                                     Sign up for free
-                                
+                                </Link>
                             </button>
-                            </Link>
                         </div>
                     </nav>
 
-                    <div className="body mt-20 mx-8">
+                    <div className="body mt-10 mx-8">
                         <div className="md:flex items-center justify-between">
                             <div className="w-full md:w-1/2 mr-auto" >
-                                <h1 className="text-4xl font-bold text-white tracking-wide">Tour Travel</h1>
-                                <h2 className=" text-2xl font-bold text-white tracking-wide">Welcome <span className="text-gray-800"> Back</span></h2>
+                                <h1 className="text-4xl font-bold text-white tracking-wide">
+                                    Tour Travel
+                                </h1>
+                                <h2 className=" text-2xl font-bold text-white tracking-wide">
+                                    Welcome
+                                    <span className="text-gray-900">
+                                        Back
+                                    </span>
+                                </h2>
                                 <p className="text-gray-300">
                                     Gateway to great destination.
                                 </p>
-                                <span className="text-white">Create New Account?
+                                <span className="text-white">
+                                    Create New Account?
                                     <a href="#" className="text-gray-900 text-lg ml-2 font-bold">
-                                        <Link to="/tr/register">
+                                        <Link to="/tourtravel/register">
                                             Sign Up
                                         </Link>
                                     </a>
                                 </span>
                             </div>
+
                             <div className="w-full md:max-w-md mt-6 opacity-80">
                                 <div className="card bg-white shadow-md rounded-lg px-4 py-4 mb-6 ">
                                     {/* Component Sign */}

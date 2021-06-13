@@ -69,7 +69,7 @@ app.use('/tr/swagger/:filename', (req,res)=>{
 })
 
 // 2. Client-Side : ReactDOMServer.
-app.get('/tr/*', (req, res) => {
+app.get('/tourtravel/*', (req, res) => {
 
     const context = {}
     const markup = ReactDOMServer.renderToString(

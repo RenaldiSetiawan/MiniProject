@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from "react-router-dom";
+import NavigationBar from "../components/layout/NavigationBar"
+import Footer from "../components/layout/Footer"
 import ApiCart from "./cart/ApiCart"
 import ApiTours from "../views/tours/ApiTours"
 
@@ -19,9 +21,10 @@ export default function Cart({ match }) {
 
     return (
         <>
-            {/* <!-- component --> */}
+        <NavigationBar/>
+            {/* <!-- COMPONENT --> */}
             <div class="flex justify-center my-6">
-                <div class="flex flex-col w-full p-8 text-gray-800 bg-white shadow-lg pin-r pin-y md:w-4/5 lg:w-4/5">
+                <div class="flex flex-col w-full p-8 text-gray-800 bg-gray-200 shadow-lg pin-r pin-y md:w-4/5 lg:w-4/5">
                     <div class="flex-1">
                         <table class="w-full text-sm lg:text-base" cellspacing="0">
                             <thead>
@@ -46,7 +49,6 @@ export default function Cart({ match }) {
                             <tbody>
                                 {tours &&
                                     <tr>
-                                         
                                         <td class="hidden pb-4 md:table-cell">
                                             <a href="#">
                                             {tours.tours_images && tours.tours_images.map((data) => {
@@ -115,6 +117,8 @@ export default function Cart({ match }) {
                     </div>
                 </div>
             </div>
+             {/* <!-- END COMPONENT --> */}
+            <Footer/>   
         </>
     );
 }

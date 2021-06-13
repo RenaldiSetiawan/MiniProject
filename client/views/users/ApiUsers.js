@@ -36,9 +36,20 @@ const list = async () => {
   }
 }
 
+const findOne = async (data) => {
+  const user_id = parseInt(data);
+  try {
+      let response = await axios.get(`/api/users/${user_id}`)
+      return await response.data
+  } catch (err) {
+      return await err.message
+  }
+}
+
 export {
   signin,
   signout,
   signup,
-  list
+  list,
+  findOne
 }
