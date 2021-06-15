@@ -3,7 +3,7 @@ import fs from "fs"; // untuk Creat file direktori
 
 //1.declare pathDir untuk menyimpan image di local storage
 
-const pathDir = __dirname + "../../../uploads/";
+const pathDir = __dirname + "../../uploads/";
 // findAll = select * from tour_commnents
 const findAll = async (req, res) => {
   const tours_images = await req.context.models.Tours_Images.findAll();
@@ -20,10 +20,15 @@ const findOne = async (req, res) => {
 
 // DELETE
 const remove = async (req, res) => {
-  const tours_images = await req.context.models.Tours_Images.destroy({
-    where: { toim_id: req.params.id },
-  });
-  return res.send("Delete TourImages Success");
+ 
+  try {
+    const tours_images = await req.context.models.Tours_Images.destroy({
+      where: { toim_id: req.params.id },
+    });
+    return res.send(tours_images);
+  } catch (error) {
+    res.send(error.message)
+  }
 };
 
 // UPDATE FIELD
@@ -44,17 +49,66 @@ const update = async (req, res) => {
   return res.send(tours_images);
 };
 
-// Create MULTIP
-const createFileType = async (req, res) => {
-/* Jika blum ada Folder Upload maka Folder Upload dibuat Otomatis
-Jika sudah maka keluar dari Kondisi */
+// UPDATE
+const updateFileType = async (req, res) => {
+
   if (!fs.existsSync(pathDir)) {
     fs.mkdirSync(pathDir);
   }
 
   const form = formidable({
-    multiples: true, 
-    uploadDir: pathDir, 
+    multiples: true,
+    uploadDir: pathDir,
+    keepExtensions: true,
+  });
+
+  form
+    .on("fileBegin", function (name, file) {
+
+      file.path = pathDir + file.name;
+    })
+    .parse(req, async (err, fields, files) => {
+      if (err) {
+        res.status(400).json({
+          message: "Image tidak bisa diupload",
+        });
+      }
+
+      let tours_images = new req.context.models.Tours_Images(fields);
+      if (files) {
+
+        tours_images.toim_filename = files.image.name;
+        tours_images.toim_filesize = files.image.size;
+        tours_images.toim_filetype = files.image.type;
+
+        console.log(tours_images);
+      }
+
+      try {
+        const result = await req.context.models.Tours_Images.update(tours_images.dataValues,
+
+          { returning: true, where: { toim_id: req.params.id } }
+
+        );
+        return res.send(result)
+      } catch (error) {
+        res.send(error.message)
+      }
+
+    });
+}
+
+// Create MULTIP
+const createFileType = async (req, res) => {
+  /* Jika blum ada Folder Upload maka Folder Upload dibuat Otomatis
+  Jika sudah maka keluar dari Kondisi */
+  if (!fs.existsSync(pathDir)) {
+    fs.mkdirSync(pathDir);
+  }
+
+  const form = formidable({
+    multiples: true,
+    uploadDir: pathDir,
     keepExtensions: true,
   });
 
@@ -72,30 +126,32 @@ Jika sudah maka keluar dari Kondisi */
 
       let tours_images = new req.context.models.Tours_Images(fields);
       if (files) {
-        
+
         tours_images.toim_filename = files.image.name;
         tours_images.toim_filesize = files.image.size;
         tours_images.toim_filetype = files.image.type;
-     
+
         console.log(tours_images);
       }
 
       try {
         const result = await req.context.models.Tours_Images.create(tours_images.dataValues);
         return res.send(result)
-    } catch (error) {
+      } catch (error) {
         res.send(error.message)
-    }
+      }
 
-});
+    });
 }
+
+
 
 const photo = async (req, res, next) => {
   const fileName = `${pathDir}/${req.params.filename}`
 
   if (req.params.filename !== 'null') {
-      res.set("Content-Type", "image/jpeg")
-      return res.download(fileName);
+    res.set("Content-Type", "image/jpeg")
+    return res.download(fileName);
   }
 
   next()
@@ -110,6 +166,7 @@ export default {
   findOne,
   remove,
   update,
+  updateFileType,
   createFileType,
   photo,
   defaultPhoto

@@ -27,6 +27,15 @@ const signup = async () => {
   }
 }
 
+const register = async () => {
+  try {
+    const result = await axios.post(`/api/users/register`)
+    return await result.data
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 const list = async () => {
   try {
     let response = await axios.get(`/api/users`)
@@ -50,6 +59,7 @@ export {
   signin,
   signout,
   signup,
+  register,
   list,
   findOne
 }

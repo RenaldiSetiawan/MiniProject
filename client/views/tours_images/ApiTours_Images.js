@@ -38,7 +38,7 @@ const update = async (tours_images) => {
 const remove = async (data) => {
     const toim_id = parseInt(data);
     try {
-        let response = await axios.delete(`/api/tours-_images/${toim_id}`)
+        let response = await axios.delete(`/api/tours_images/${toim_id}`)
         return await response.data
     } catch (err) {
         return await err.message

@@ -1,115 +1,51 @@
 import React, { useState, useEffect } from 'react'
 import PageHeader from '../../components/PageHeader'
-import { useHistory } from "react-router-dom";
-
-import ApiToursImages from './ApiTours_Images'
+import { useHistory, useLocation } from "react-router-dom";
 import { Redirect, Link } from 'react-router-dom'
+import { useDispatch, useSelector } from "react-redux";
+import {createTourImage} from '../action/tour_imagesAction';
 
-
-export default function AddEditTourImage({ match }) {
-    let history = useHistory();
-
+export default function AddEditTourImage() {
+    
     const [blob, setBlob] = useState([]);
-    const [files, setFiles] = useState([]);
-    const [edit, setEdit] = useState(false)
-    const [uploaded, setUploaded] = useState(false)
-
+    const dispatch = useDispatch();
+    const history = useHistory();
+    const location = useLocation();
     const [values, setValues] = useState({
         image: undefined,
         toim_primary: undefined,
-        toim_tour_id: undefined,
-        error: "",
-        redirect: false
+        toim_tour_id: undefined
     });
-
-    const uploadSingleFile = name => event => {
-        setUploaded(true)
-
-        const x = event.target.files[0];
-        setBlob({ ...blob, [name]: URL.createObjectURL(event.target.files[0]) })
-        console.log(blob)
-
-        setFiles({ ...files, ['image']: event.target.files[0] })
-        console.log(files);
-    }
-
-    useEffect(() => {
-        ApiToursImages.findOne(match.params.tourimageId).then(data => {
-            if (data.error) {
-                console.log(data.error) 
-                setEdit(false)
-            } else {
-                setValues({
-                    ...values, 
-                    toim_id: data.toim_id,
-                    toim_filename: data.toim_filename,
-                    toim_filepath: data.toim_filepath,
-                    toim_primary: data.toim_primary.boolena,
-                    toim_tour_id: data.toim_tour_id
-                });
-
-                // console.log("profile emp : " + data.profile + " " + data.toim_id);
-
-                ApiToursImages.showImage(`/api/tours_images/` + data.toim_filename, data.toim_filename).then(result => {
-                    if (result.error) {
-                        console.log('Get Image Failed')
-                    } else {
-                        const x = result;
-                        setFiles({ ...files, image: x })
-                        setBlob({ ...blob, image: URL.createObjectURL(result) })
-                    }
-
-                })
-            }
-        });
-
-        setUploaded(false)
-        setEdit(true)
-
-    }, [match.params.tourimageId])
-
+    const toimCreate = useSelector ((state) => state.toimCreate)
+    const { toimRegis } = toimCreate
+    
     const handleOnChange = name => event => {
         setValues({ ...values, [name]: event.target.value })
     }
 
-    const imageUrl =
-        `/api/tours_images/${values.toim_filename}`
-
+    const uploadSingleFile = name => event => {
+       
+        setBlob({ ...blob, [name]: URL.createObjectURL(event.target.files[0]) })
+        
+        setValues({ ...values, ['image']: event.target.files[0] })
+        
+    }
+   
     const onSubmit = (e) => {
         e.preventDefault();
-        console.log(edit);
-        let tourimages = new FormData()
-        tourimages.append('toim_id', parseInt(values.toim_id));
-        tourimages.append('image', values.image);
-        tourimages.append('toim_primary', values.toim_primary);
-        tourimages.append('toim_tour_id', values.toim_tour_id);
-
-
-        if (!edit) {
-            ApiToursImages.create(tourimages).then(data => {
-                if (data.errors) {
-                    console.log('create new record failed')
-                    setValues({ ...values, error: data.errors[0].message })
-                } else {
-                    setValues({ ...values, redirect: true })
-                }
-            })
-        } else {
-            ApiToursImages.update(tourimages).then(data => {
-                if (data.errors) {
-                    console.log('create new record failed')
-                    setValues({ ...values, error: data.errors[0].message })
-                } else {
-                    setValues({ ...values, redirect: true })
-                }
-            })
+        console.log(values);
+        dispatch(createTourImage(values));
+        
+    }
+    
+    useEffect(() => {
+        if (toimRegis) {
+            const redirect = location.search
+                ? new URLSearchParams(location.search).get("redirect")
+                : "/tourtravel/toursimages/"
+                history.push(redirect);
         }
-    }
-
-    if (values.redirect) {
-        return (<Redirect to={'/tourtravel/toursimages'} />)
-    }
-
+    }, [toimRegis, history])
     return (
         <>
             <PageHeader title={'TourImages'} setModal={() => history.goBack()} actionType={'Back'} />
@@ -130,13 +66,13 @@ export default function AddEditTourImage({ match }) {
                                                 </label>
                                                 <select
                                                     id="toim_primary" 
-                                                    name="Boolean"
+                                                    name="toim_primary"
                                                     type="select"
                                                     onChange={handleOnChange('toim_primary')}                     
                                                     className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                                                 >
-                                                 <option value="Garuda">true</option>
-                                                 <option value="Garuda">false</option>
+                                                    <option>true</option>
+                                                    <option>false</option>
                                                 </select>
                                                 <div className="pt-3 ..."></div>
                                                 {/* ------------------------------------------------- */}
@@ -159,12 +95,13 @@ export default function AddEditTourImage({ match }) {
                                         <div className="col-span-6 sm:col-span-2 lg:col-span-3 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
                                             <div className="space-y-2 text-center">
 
-                                                <div className="mx-auto h-48 w-24 text-gray-400">
+                                                {/* <div className="mx-auto h-48 w-24 text-gray-400">
                                                     <img src={blob.image} alt='image' className="mx-auto h-48 w-48" />
-                                                </div>
+                                                </div> */}
 
                                                 <div className="flex text-sm text-gray-600">
                                                     <label for="image" className="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
+                                                        <img src={blob.image}/>
                                                         <span>
                                                             Upload a file
                                                         </span>
@@ -172,7 +109,6 @@ export default function AddEditTourImage({ match }) {
                                                             id="image" 
                                                             accept="image/*" 
                                                             name="image"
-                                                            value={values.image} 
                                                             onChange={uploadSingleFile('image')}
                                                             type="file" 
                                                             className="sr-only" 

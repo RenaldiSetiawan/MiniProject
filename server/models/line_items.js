@@ -38,6 +38,10 @@ const line_items = (sequelize, DataTypes) => {
         type: DataTypes.STRING(25),
         allowNull: true,
       },
+      price: {
+        type: DataTypes.DECIMAL,
+        allowNull: true
+      }
     },
     {
       sequelize,

@@ -21,6 +21,8 @@ import Template from './../template'
 
 //comment script dibawah before building for production
 import devBundle from './devBundle'
+import {Provider} from 'react-redux'
+import store from '../client/views/store'
 // client-side : gunakan ketika development only
 
 const app = express()
@@ -73,9 +75,11 @@ app.get('/tourtravel/*', (req, res) => {
 
     const context = {}
     const markup = ReactDOMServer.renderToString(
+      <Provider store={store}>
       <StaticRouter location={req.url} context={context}>
         <MainRouter />
       </StaticRouter>
+      </Provider>
     );
     if (context.url) {
       return res.redirect(303, context.url)

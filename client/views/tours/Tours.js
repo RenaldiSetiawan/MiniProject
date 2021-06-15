@@ -75,6 +75,9 @@ export default function Tour() {
                             <table className="w-10 divide-y divide-gray-200" > 
                                 <thead className="bg-gray-800">
                                     <tr>
+                                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
+                                            Tours Id
+                                        </th>
                                         <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
                                             Tours Name
                                         </th>
@@ -111,6 +114,9 @@ export default function Tour() {
                                 <tbody className="bg-white  divide-y">
                                     {tours.map((data) => (
                                         <tr key={data.tour_id}>
+                                             <td className="px-6 py-4 whitespace-nowrap">
+                                                <div className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 ">{data.tour_id}</div>
+                                            </td>
                                             <td className="px-6 py-4 whitespace-nowrap">
                                                 <div className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 ">{data.tour_name}</div>
                                             </td>

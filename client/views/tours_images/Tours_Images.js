@@ -91,11 +91,11 @@ export default function ToursImages() {
                                                         <div className="text-sm text-gray-500">{row.toim_filetype}</div>
                                                     </td>
                                                     <td className="px-6 py-4 whitespace-nowrap">
-                                                        <div className="text-sm text-gray-500">{row.toim_primary? 'true' : 'false'}</div>
+                                                        <div className="text-sm text-gray-500">{row.toim_primary ? 'true' : 'false'}</div>
                                                     </td>
                                                     <td className="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
                                                         <div className="mt-5 flex lg:mt-0 lg:ml-4">
-                                                            <span className="hidden sm:block mr-2">
+                                                           {/*  <span className="hidden sm:block mr-2">
                                                                 <Link to={"/hr/employee/edit/" + row.employee_id}>
                                                                     <button type="button"
                                                                         className="w-4 mr-2 transform hover:text-purple-500 hover:scale-110"
@@ -103,16 +103,16 @@ export default function ToursImages() {
                                                                         <PencilAltIcon className="-ml-1 mr-2 h-5 w-5 text-red-600" aria-hidden="true" />
                                                                     </button>
                                                                 </Link>
-                                                            </span>
+                                                            </span> */}
                                                             <span className="hidden sm:block">
                                                                 <button onClick={() => {
                                                                     if (window.confirm('Delete this record ?'))
-                                                                        onDelete(row.toim_tour_id)
+                                                                        onDelete(row.toim_id)
                                                                 }}
                                                                     type="button"
                                                                     className="w-4 mr-2 transform hover:text-purple-500 hover:scale-110"
                                                                 >
-                                                                    <TrashIcon className="-ml-1 mr-2 h-5 w-5 text-blue-700" aria-hidden="true" />
+                                                                    <TrashIcon className="-ml-1 mr-2 h-5 w-5 text-red-600" aria-hidden="true" />
                                                                 </button>
                                                             </span>
                                                         </div>

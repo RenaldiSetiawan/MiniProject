@@ -1,5 +1,5 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js add @healles ui/react @heroicons
+  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js add reac-redux redux redux-devtools-extension redux-thunk
 
 PATH: 
   C:\Program Files\AdoptOpenJDK\jre-15.0.2.7-hotspot\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files\nodejs\;C:\Program Files (x86)\Yarn\bin\;C:\Program Files\Git\cmd;C:\ProgramData\chocolatey\bin;C:\Program Files\PuTTY\;C:\Users\E5470\Downloads\mongodb-shell-windows-x86_64-4.4.4\mongodb-win32-x86_64-windows-4.4.4\bin;C:\Program Files\MongoDB\Server\4.4\bin;C:\Program Files\Docker\Docker\resources\bin;C:\ProgramData\DockerDesktop\version-bin;C:\Program Files\OpenVPN\bin;C:\Users\E5470\AppData\Local\Microsoft\WindowsApps;;C:\Users\E5470\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\E5470\AppData\Roaming\npm;C:\Users\E5470\AppData\Local\Yarn\bin;C:\Program Files\heroku\bin
@@ -14,8 +14,8 @@ Platform:
   win32 x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/@healles: Request "https://registry.yarnpkg.com/@healles" returned a 405
-      at Request.params.callback [as _callback] (C:\Program Files (x86)\Yarn\lib\cli.js:66106:18)
+  Error: https://registry.yarnpkg.com/reac-redux: Not found
+      at Request.params.callback [as _callback] (C:\Program Files (x86)\Yarn\lib\cli.js:66097:18)
       at Request.self.callback (C:\Program Files (x86)\Yarn\lib\cli.js:140749:22)
       at Request.emit (events.js:315:20)
       at Request.<anonymous> (C:\Program Files (x86)\Yarn\lib\cli.js:141721:10)
@@ -40,6 +40,8 @@ npm manifest:
       "reverse:db": "sequelize-auto -o ./schema-reverse -d ApiTourTravel -h localhost -u postgres -p 5432 -x admin -e postgres"
     },
     "dependencies": {
+      "@headlessui/react": "^1.2.0",
+      "@heroicons/react": "^1.0.1",
       "@hot-loader/react-dom": "^17.0.1",
       "@popperjs/core": "^2.9.0",
       "@tailwindcss/custom-forms": "^0.2.1",
@@ -1086,6 +1088,16 @@ Lockfile:
     integrity sha512-kwOXw8fZ0Lt1QmeOOrd+o4Ibvp4UTEBFQbzvWldjlKv5n+G9sXfIPn1hh63IQIL8K8vbvv1oYMJiIUbuy9bGaA==
     dependencies:
       purgecss "^3.1.3"
+  
+  "@headlessui/react@^1.2.0":
+    version "1.2.0"
+    resolved "https://registry.yarnpkg.com/@headlessui/react/-/react-1.2.0.tgz#e48652bfce82ddf73d7f331faeb9db6526ee6874"
+    integrity sha512-19DkLz8gDgbi+WvkoTzi9vs0NK9TJf94vbYhMzB4LYJo03Kili0gmvXT9CiKZoxXZ7YAvy/b1U1oQKEnjWrqxw==
+  
+  "@heroicons/react@^1.0.1":
+    version "1.0.1"
+    resolved "https://registry.yarnpkg.com/@heroicons/react/-/react-1.0.1.tgz#66d25f6441920bd5c2146ea27fd33995885452dd"
+    integrity sha512-uikw2gKCmqnvjVxitecWfFLMOKyL9BTFcU4VM3hHj9OMwpkCr5Ke+MRMyY2/aQVmsYs4VTq7NCFX05MYwAHi3g==
   
   "@hot-loader/react-dom@^17.0.1":
     version "17.0.1"

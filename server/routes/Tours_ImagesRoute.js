@@ -5,6 +5,7 @@ const router = Router();
 router.get("/", IndexCtrl.Tours_ImagesCtrl.findAll);
 router.get("/:id", IndexCtrl.Tours_ImagesCtrl.findOne);
 router.put("/:id", IndexCtrl.Tours_ImagesCtrl.update);
+router.put("/multipart", IndexCtrl.Tours_ImagesCtrl.updateFileType);
 router.delete("/:id", IndexCtrl.Tours_ImagesCtrl.remove);
 router.post("/multipart", IndexCtrl.Tours_ImagesCtrl.createFileType);
 router.get('/photo/:filename', IndexCtrl.UploadDownloadCtrl.download,

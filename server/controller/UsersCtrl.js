@@ -22,13 +22,13 @@ const findAll = async (req, res) => {
 // find region by id
 const findOne = async (req, res) => {
   const users = await req.context.models.Users.findOne({
-     //Join one to many
-     include: [
+    //Join one to many
+    include: [
       {
         all: true,
       },
     ],
-    
+
     where: { user_id: req.params.id },
   });
   return res.send(users);
@@ -80,6 +80,32 @@ const signup = async (req, res, next) => {
     });
 };
 
+const register = async (req, res, next) => {
+  const {
+    user_name,
+    user_email,
+    user_password,
+    user_birthdate,
+    user_gender, user_type
+  } = req.body;
+
+  const { dataValues } = new req.context.models.Users(req.body);
+  const salt = UsersHelper.makeSalt();
+  const hashPassword = UsersHelper.hashPassword(dataValues.user_password, salt);
+
+    const users = await req.context.models.Users.create({
+     user_name: dataValues.user_name,
+     user_email: dataValues.user_email,
+     user_password: hashPassword,
+     user_salt: salt,
+     user_birthdate: dataValues.user_birthdate,
+     user_gender: dataValues.user_gender,
+     user_type: dataValues.user_type
+    });
+    return res.send(users);
+  
+};
+
 //  Where Id
 const update = async (req, res) => {
   const { dataValues } = await req.context.models.Users.findOne({
@@ -114,8 +140,8 @@ const update = async (req, res) => {
       let users = new req.context.models.Users(fields);
 
       if (users.user_password) {
-          users.user_salt = Auth.makeSalt();
-          users.user_password = Auth.hashPassword(
+        users.user_salt = Auth.makeSalt();
+        users.user_password = Auth.hashPassword(
           users.user_password,
           users.user_salt
         );
@@ -228,29 +254,42 @@ const remove = async (req, res) => {
 
 const cekUser = async (req, res, next) => {
   try {
-    if (req.params.id===undefined || isNaN(req.params.id)) res.status(400).send({message: "User Id Wrong"})
+    if (req.params.id === undefined || isNaN(req.params.id)) res.status(400).send({ message: "User Id Wrong" })
     const users = await req.context.models.Users.findOne({
-      include:[{
-        all:true
+      include: [{
+        all: true
       }],
-      where:{user_id: req.params.id}
+      where: { user_id: req.params.id }
     })
     req.cekUser = users
     next()
   } catch (error) {
-    
+
   }
 }
 
+// const checkL = async (req, res, next) => {
+//   try {
+//     const data = await req.context.models.Users.findOne({
+//       where: { user_id: req.params.id },
+//     });
+//     req.user = data;
+//     next();
+//   } catch (error) {
+//     console.log(error);
+//   }
+// }
 // Gunakan export default agar semua function bisa dipakai di file lain.
 export default {
   findAll,
   findOne,
   signup,
+  register,
   update,
   signin,
   requireSignin,
   signout,
   remove,
-  cekUser
+  cekUser,
+  // checkL
 };

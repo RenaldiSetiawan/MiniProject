@@ -21,9 +21,9 @@ export default function Cart({ match }) {
 
     return (
         <>
-        <NavigationBar/>
-            {/* <!-- COMPONENT --> */}
-            <div class="flex justify-center my-6">
+            <NavigationBar />
+            {/* <!-- COMPONENT CART--> */}
+            <div class="flex justify-center my-6 pb-20 ">
                 <div class="flex flex-col w-full p-8 text-gray-800 bg-gray-200 shadow-lg pin-r pin-y md:w-4/5 lg:w-4/5">
                     <div class="flex-1">
                         <table class="w-full text-sm lg:text-base" cellspacing="0">
@@ -32,9 +32,6 @@ export default function Cart({ match }) {
                                     <th class="hidden md:table-cell"></th>
                                     <th class="text-left">
                                         Product
-                                    </th>
-                                    <th class="text-left">
-                                        Created On
                                     </th>
                                     <th class="lg:text-right text-left pl-5 lg:pl-0">
                                         <span class="lg:hidden" title="Quantity">Qty</span>
@@ -51,13 +48,13 @@ export default function Cart({ match }) {
                                     <tr>
                                         <td class="hidden pb-4 md:table-cell">
                                             <a href="#">
-                                            {tours.tours_images && tours.tours_images.map((data) => {
-                                                return (
-                                                    <img src={`/api/tours_images/photo/` + data.toim_filename}
+                                                {tours.tours_images &&
+                                                    <img src={`/api/tours_images/photo/` + tours.tours_images[0].toim_filename}
                                                         alt={`${tours.tour_id}`}
-                                                        className="rounded-t w-24 h-auto rounded-lg overflow-hidden object-cover" />
-                                                )
-                                            })}
+                                                        className="block pr-px h-24 w-20 rounded-lg bg-cover"
+                                                        style={{ minHeight: "10vh" }}
+                                                    />
+                                                }
                                             </a>
                                         </td>
                                         <td>
@@ -72,13 +69,7 @@ export default function Cart({ match }) {
                                                 </form>
                                             </a>
                                         </td>
-                                        <td>
-                                            <div>
-                                                <input
-                                                    type="Date">
-                                                </input>
-                                            </div>
-                                        </td>
+
                                         <td class="justify-center md:justify-end md:flex mt-6">
                                             <div class="w-20 h-10">
                                                 <div class="relative flex flex-row w-full h-8">
@@ -93,7 +84,7 @@ export default function Cart({ match }) {
                                         <td class="text-right">
                                             <span class="text-sm lg:text-base font-medium">
                                                 {tours.tour_price && tours.tour_price.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')}
-                                     </span>
+                                            </span>
                                         </td>
                                     </tr>
                                 }
@@ -117,8 +108,8 @@ export default function Cart({ match }) {
                     </div>
                 </div>
             </div>
-             {/* <!-- END COMPONENT --> */}
-            <Footer/>   
+            {/* <!-- END COMPONENT --> */}
+            <Footer />
         </>
     );
 }

@@ -12,7 +12,7 @@ const findOne = async (req, res) => {
   return res.send(line_items);
 };
 
-const cekLine = async (req,res,next) => {
+const cekLine = async (req, res, next) => {
   const orders = req.orders || req.cekOrd
   const closes = req.cekCart
 
@@ -22,7 +22,7 @@ const cekLine = async (req,res,next) => {
         lite_status: 'checkout',
         lite_order_name: orders.order_name
       },
-      {return: true, where: {lite_id: data.lite_id}})
+        { return: true, where: { lite_id: data.lite_id } })
     } catch (error) {
       return res.send(error)
     }
@@ -44,17 +44,17 @@ const cekLite = async (req, res, next) => {
     req.liteitem = item
     next()
   } catch (error) {
-      return res.status(500).json({message: "Input Error"+error})
+    return res.status(500).json({ message: "Input Error" + error })
   }
 }
 
-const updateLite = async (req,res) => {
+const updateLite = async (req, res) => {
   try {
     const cekLite = req.liteitem
     const cekTours = req.tours
     const item = await req.context.models.Line_Items.update({
       lite_qty: req.body.lite_qty,
-    },{returning: true, where:{lite_id: cekLite.lite_id}})
+    }, { returning: true, where: { lite_id: cekLite.lite_id } })
     return res.send(item)
   } catch (error) {
     return res.send(error)
@@ -92,6 +92,48 @@ const remove = async (req, res) => {
   return res.send("Delete LineItems was Successful");
 };
 
+const createlite = async (req, res) => {
+  const cart = req.cart;
+  const tours = req.tours;
+  try {
+
+    const item = await req.context.models.Line_Items.create(
+      {
+        lite_qty: req.body.lite_qty,
+        lite_status: "open",
+        lite_tour_id: tours.tale_id,
+        lite_toca_id: cart.toca_id,
+      },
+      { returning: true, where: { lite_id: req.params.id } }
+    );
+
+    return res.send(item);
+  } catch (error) {
+    console.log(error);
+    return res.send(error);
+  }
+};
+
+// const createlineItem = async (req, res) => {
+//   try {
+//     const item = await req.context.models.Line_Items.create(
+//       {
+//         lite_qty: req.body.lite_qty,
+//         lite_status: "open",
+//         lite_tour_id: req.body.lite_tour_id,
+//         lite_toca_id: req.dataLine.toca_id,
+//         price: req.body.price,
+//       },
+//       { returning: true, where: { lite_id: req.params.id } }
+//     );
+
+//     return res.send(item);
+//   } catch (error) {
+//     console.log(error);
+//     return res.send(error);
+//   }
+// };
+
 export default {
   findAll,
   findOne,
@@ -99,5 +141,7 @@ export default {
   cekLine,
   updateLite,
   create,
-  remove
+  remove,
+  // createlite,
+  // createlineItem
 };

@@ -1,54 +1,43 @@
 import React, { useEffect, useState } from 'react'
-import { Link, Redirect, useHistory } from "react-router-dom";
-import { signup } from '../users/ApiUsers'
+import { Link, Redirect, useHistory, useLocation } from "react-router-dom";
 import auth from '../../views/users/AuthHelper'
+import { useDispatch, useSelector } from 'react-redux';
+import { register } from '../action/userAction'
 
 export default function Register(props) {
 
+    const dispatch = useDispatch();
     const history = useHistory();
-
+    const location = useLocation();
     const [values, setValues] = useState({
-        email: undefined,
-        password: undefined,
-        redirect: false,
-        error: ''
+        user_name: undefined,
+        user_email: undefined,
+        user_password: undefined,
+        user_birthdate: undefined,
+        user_gender: undefined,
+        user_type: "user"
     });
 
-    const handleOnChange = name => event => {
-        setValues({ ...values, [name]: event.target.value })
-    }
+    const handleOnChange = (name) => (event) => {
+        setValues({...values, [name]: event.target.value });
+    };
+
+    const userRegisterReducer = useSelector((state) => state.userRegisterReducer)
+    const { userRegis } = userRegisterReducer
 
     const onSubmit = (e) => {
         e.preventDefault();
-        const users = {
-            user_email: values.email || undefined,
-            user_password: values.password || undefined
-        }
-
-        signup(users).then((data) => {
-            if (data.error) {
-                setValues({ ...values, error: data.error })
-            } else {
-                auth.authenticate(data, () => {
-                    setValues({ ...values, error: '', redirect: true })
-                    setTour(data);
-                })
-            }
-        })
+        dispatch(register(values));
     }
 
-
-    const [tours, setTour] = useState("");
     useEffect(() => {
-        if (values.redirect) {
-            /* console.log('redirect : '||{from}) */
-            if (tours.users.user_type === "admin") {
-                history.push("/tourtravel/tours");
-            } else {
-                history.push("/tourtravel/landing");
-            }
+        if (userRegis) {
+            const redirect = location.search
+                ? new URLSearchParams(location.search).get("redirect")
+                : "/tourtravel/login";
+                history.push(redirect);
         }
-    }, [tours]);
+    }, [userRegis, history ])
 
     return (
         <>
@@ -62,15 +51,15 @@ export default function Register(props) {
                         <h1 className="mb-8 text-3xl text-center">
                             Sign up
                         </h1>
-                        {values.error && (
-                            <p class="text-red-400 text-lg italic">{values.error}</p>
+                        { values.error && (
+                            <p className="text-red-600 text-lg italic">
+                                {values.error}
+                            </p>
                         )}
                         {/* Code Here */}
-                        <form method="POST" action="#">
                             <input
                                 type="text"
                                 className="block border border-grey-light w-full p-3 rounded mb-4"
-                                name="fullname"
                                 placeholder="Full Name"
                                 onChange={handleOnChange('user_name')}
                             />
@@ -78,9 +67,9 @@ export default function Register(props) {
                             <input
                                 type="text"
                                 className="block border border-grey-light w-full p-3 rounded mb-4"
-                                name="email"
                                 placeholder="Email"
-                                onChange={handleOnChange('user_name')}
+                                value={values.email}
+                                onChange={handleOnChange('user_email')}
                             />
                             {/* ------------------------------------------------------------------------ */}
                             <input
@@ -119,7 +108,7 @@ export default function Register(props) {
                                 <option value="Male">Male</option>
                             </select>
                             {/* ------------------------------------------------------------------------ */}
-                            <label
+                            {/* <label
                                 htmlFor="first_name"
                                 className="block text-sm font-medium text-gray-700">
                                 Select your profile
@@ -130,7 +119,7 @@ export default function Register(props) {
                                 name="avatar"
                                 placeholder="Avatar"
                                 onChange={handleOnChange('user_avatar')}
-                            />
+                            /> */}
                             {/* ------------------------------------------------------------------------ */}
                             <select
                                 type="select"
@@ -140,7 +129,7 @@ export default function Register(props) {
                             >
                                 <option value="Female">user</option>
                             </select>
-                        </form>
+                     
                         <button
                             onClick={onSubmit}
                             type="submit"

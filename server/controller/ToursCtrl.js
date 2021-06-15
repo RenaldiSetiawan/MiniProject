@@ -30,6 +30,19 @@ const findOne = async (req, res) => {
   return res.send(tours);
 };
 
+// const findOne = async (req, res, next) => {
+//   try {
+//    const tours = await req.context.models.Tours.findOne({
+//        //create body cors_id 
+//        where: { tours_id: req.body.tours_id }
+//    });
+//       req.tours = tours
+//        next()
+//   } catch (error) {
+//       console.log(error)
+//   }
+// }
+
 // Create new Table
 const create = async (req, res) => {
   const tours = await req.context.models.Tours.create({
