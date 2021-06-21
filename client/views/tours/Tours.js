@@ -103,9 +103,6 @@ export default function Tour() {
                                             Tours Description
                                         </th>
                                         <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
-                                            Tours User Id
-                                        </th>
-                                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
                                             Action
                                         </th>
                                     </tr>
@@ -130,7 +127,7 @@ export default function Tour() {
                                                 <div className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{data.tour_schedule}</div>
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap">
-                                                <div className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{data.tour_price}</div>
+                                                <div className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{data.tour_price.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')}</div>
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap">
                                                 <div className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{data.tour_hotel}</div>
@@ -140,9 +137,6 @@ export default function Tour() {
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap">
                                                 <div className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{data.tour_description}</div>
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                <div className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{data.tour_user_id}</div>
                                             </td>
                                             
                                             <td className="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">

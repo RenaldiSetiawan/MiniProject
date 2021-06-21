@@ -2,6 +2,11 @@ import { sequelize } from "../../config/config-db"
 
 const findAll = async (req, res) => {
   const tours_cart = await req.context.models.Tours_Cart.findAll({
+    include: [
+      {
+        all: true,
+      },
+    ],
   });
   return res.send(tours_cart);
 };
@@ -9,6 +14,7 @@ const findAll = async (req, res) => {
 // find region by id
 const findOne = async (req, res) => {
   const tours_cart = await req.context.models.Tours_Cart.findOne({
+    where: { toca_status: "open" },
     include: [
       {
         all: true,
@@ -18,16 +24,6 @@ const findOne = async (req, res) => {
   });
   return res.send(tours_cart);
 };
-
-// Create new Table
-/* const create = async (req, res) => {
-  const tours_cart = await req.context.models.Tours_Cart.create({
-    toca_created_on: new Date(),
-    toca_status: "open",
-    toca_user_id: req.body.toca_user_id,
-  });
-  return res.send(tours_cart);
-}; */
 
 const cekCart = async (req, res, next) => {
   const users = req.cekUser
@@ -121,56 +117,6 @@ const remove = async (req, res) => {
   return res.send("Delete Cart was Successful");
 };
 
-// const createc = async (req, res, next) => {
-//   try {
-//     const user = req.user;
-
-//     const cart = await req.context.models.Tours_Cart.create({
-//       toca_status: "open",
-//       toca_user_id: user.user_id,
-//     });
-//     req.cart = cart;
-//     next();
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
-
-// const findCreateCart = async (req, res, next) => {
-//   const tours_cart = await req.context.models.Tours_Cart.findAll({
-//     where: { toca_user_id: req.body.toca_user_id },
-//   });
-
-//   const openCart = tours_cart.find((x) => x.toca_status === "open");
-
-//   if (openCart) {
-//     req.dataLine = {
-//       toca_id: openCart.toca_id,
-//     };
-//     next();
-//   } else {
-//     const cart = await req.context.models.Tours_Cart.create({
-//       toca_user_id: req.body.toca_user_id,
-//       toca_status: "open"
-//     });
-//     req.dataLine = {
-//         toca_id: cart.toca_id,
-//       };
-//     next();
-//   }
-// };
-
-// const findAllOpen = async (req, res) => {
-//   const tours_cart = await req.context.models.Tours_Cart.findAll({
-//       where: { toca_status: "open" },
-//       include: [
-//           {
-//             all: true,
-//           },
-//         ]
-//   });
-//   return res.send(tours_cart);
-// };
 
 export default {
   findAll,
@@ -181,7 +127,5 @@ export default {
   closeCart,
   update,
   remove,
-  // createc,
-  // findCreateCart,
-  // findAllOpen
+  
 };

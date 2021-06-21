@@ -11,7 +11,9 @@ import Register from './views/users/Register';
 import Tours from './views/tours/Tours'
 import Tours_Images from './views/tours_images/Tours_Images';
 import AddEditTourImage from './views/tours_images/AddEditTourImage'
-
+import PrivateRoute from './views/users/PrivateRoute';
+import Order from './views/Order';
+import BayarOrder from './views/BayarOrder';
 
 
 const MainRouter = () => {
@@ -20,14 +22,16 @@ const MainRouter = () => {
       <Route exact path="/tourtravel/login" component={Login} />
       <Route exact path="/tourtravel/register/" component={Register} />
       <Route exact path="/tourtravel/landing" component={Landing} />
-      <Route exact path="/tourtravel/profile" component={Profile} />
+      <PrivateRoute exact path="/tourtravel/profile" component={Profile} />
       <Route exact path="/tourtravel/detail/:id" component={Detail} />
-      <Route exact path="/tourtravel/cart/:id" component={Cart} />
+      <PrivateRoute exact path="/tourtravel/cart" component={Cart} />
+      <Route exact path="/tourtravel/order" component={Order} />
+      <Route exact path="/tourtravel/bayarorder" component={BayarOrder} />
 
       <MainLayout >
-        <Route exact path="/tourtravel/tours/" component={Tours} />
-        <Route exact path="/tourtravel/toursimages/" component={Tours_Images} />
-        <Route exact path="/tourtravel/toursimages/add" component={AddEditTourImage} />
+        <PrivateRoute exact path="/tourtravel/tours/" component={Tours} />
+        <PrivateRoute exact path="/tourtravel/toursimages/" component={Tours_Images} />
+        <PrivateRoute exact path="/tourtravel/toursimages/add" component={AddEditTourImage} />
 
       </MainLayout>
     </Switch>

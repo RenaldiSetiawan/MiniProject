@@ -1,6 +1,43 @@
+import formidable from "formidable";
+import fs from 'fs'
+
+const pathDir = __dirname + '../../uploads/';
+
+const defaultPhoto = (req, res) => {
+  return res.sendFile(process.cwd())
+  //return res.sendFile(process.cwd())
+}
+
 // findAll = select * table
 const findAll = async (req, res) => {
+  
+  // const currentPage = req.query.page || 1;
+  //   const perPage = req.query.perPage || 5;
+  //     let totalItems;
+      
+  //     tours.findAll()
+  //     .countDocuments()
+  //     .then(count => {
+  //       totalItems = count;
+  //       return tours.findAll()
+  //       .skip((currentPage - 1) * perPage)
+  //       .limit(perPage);
+  //     })
+  //     .then( result => {
+  //       res.status(200).json({
+  //         message: 'Data Berhasil dipanggil', 
+  //         data: result,
+  //         total_data: totalItems,
+  //         per_page: perPage,
+  //         current_page: currentPage
+  //       })
+  //     })
+  //     .catch(err => {
+  //       next(err);
+  //     })
+
   const tours = await req.context.models.Tours.findAll({
+    
     include: [
       {
         all: true,
@@ -55,10 +92,11 @@ const create = async (req, res) => {
     tour_hotel: req.body.tour_hotel,
     tour_pesawat: req.body.tour_pesawat,
     tour_description: req.body.tour_description,
-    tour_user_id: req.body.tour_user_id,
+    
   });
   return res.send(tours);
 };
+
 
 // UPDATE
 const update = async (req, res) => {
@@ -117,5 +155,6 @@ export default {
   create,
   update,
   remove,
-  findOut
+  findOut,
+  defaultPhoto
 };

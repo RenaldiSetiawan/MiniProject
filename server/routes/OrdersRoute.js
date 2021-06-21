@@ -17,6 +17,4 @@ router.post('/ord/:id', IndexCtrl.UsersCtrl.cekUser,
                         IndexCtrl.Tours_CartCtrl.closeCart,
                         IndexCtrl.Line_ItemsCtrl.cekLine);
 
-// router.get("/:id", IndexCtrl.OrdersCtrl.getAllOrdersByUsersId);
-
 export default router;

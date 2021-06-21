@@ -4,7 +4,7 @@ import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { BellIcon, MenuIcon, XIcon, MapIcon } from '@heroicons/react/outline'
 import Sidebar from '../components/layout/Sidebar'
 import plane from "../../uploads/logo.jpg"
-
+import { useLocation, useHistory } from 'react-router-dom'
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -12,21 +12,34 @@ function classNames(...classes) {
 
 
 export default function MainLayout(props) {
+
+  const location = useLocation()
+  const history = useHistory()
+
+  const redirect = location.search
+    ? new URLSearchParams(location.search).length("redirect")
+    : '/tourtravel/login/'
+
+  const onSubmit = () => {
+    localStorage.clear();
+    history.push(redirect);
+  }
+
   return (
     <div>
       <Disclosure as="nav" className="bg-gray-800">
         <header className="header  mb-50 bg-gray-800" >
           <div className="container px-4 sm:px-8 lg:px-16 xl:px-20 mx-auto">
             <div className="header-wrapper flex items-center justify-between">
-              <Link to="/tr">
+              <Link to="/tourtravel/landing">
                 <img src={plane} alt="logo" />
               </Link>
               <navbar className="navbar hidden md:block">
                 <ul className="flex space-x-8 text-sm font-semibold">
                   <li>
-                    <Link to="/tr/tours">
-                      <span className="text-gray-200">Dashboard</span>
-                    </Link>
+                  
+                      <button className="text-gray-200" onClick={onSubmit}>Logout</button>
+                    
                   </li>
                 </ul>
               </navbar>

@@ -15,8 +15,29 @@ const create = async (lineitems) => {
         .catch(error => { return error.message })
 }
 
+const findOne = async (data) => {
+    const lite_id = parseInt(data);
+    try {
+        let response = await axios.get(`/api/line_items/${lite_id}`)
+        return await response.data
+    } catch (err) {
+        return await err.message
+    }
+}
+
+const remove = async (data) => {
+    const lite_id = parseInt(data);
+    try {
+        let response = await axios.delete(`/api/line_items/${lite_id}`)
+        return await response.data
+    } catch (err) {
+        return await err.message
+    }
+}
 
 export default {
     list,
-    create
+    create,
+    findOne,
+    remove
 }

@@ -73,25 +73,30 @@ const remove = async (req, res) => {
 };
 
 const payment = async (req, res, next) => {
-  const prices = req.cekUser
-  const qty = req.all.qty
+  const prices = req.cekCart
   const payment = {}
   let price = 0
   let discount = 0
   let tax = 0
   let due = 0
-  for (const data of prices.tours) {
+  let qty = 0
+
+  for (const data of prices.line_items) {
     try {
-      price += parseInt(data.tour_price)
-      if (qty > 1) {
+      price += parseInt(data.price)
+      qty += parseInt(data.lite_qty) 
+      if (req.all.qty > 1) {
         discount = 0.05 * price
       }
+    
       tax = (price - discount) * 0.1
       due = price - discount + tax
       payment['price'] = price
       payment['discount'] = discount
       payment['tax'] = tax
       payment['due'] = due
+      payment['qty'] = qty 
+      
     } catch (error) {
       return res.status(500).json({ message: "Orders Error" + error })
     }
@@ -126,7 +131,7 @@ const createOrd = async (req, res, next) => {
         order_discount: req.payment.discount,
         order_tax: req.payment.tax,
         order_total_due: req.payment.due,
-        order_total_qty: req.all.qty,
+        order_total_qty: req.payment.qty,
         order_city: req.body.order_city,
         order_address: req.body.order_address,
         order_status: 'open',

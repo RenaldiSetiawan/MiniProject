@@ -40,14 +40,7 @@ const tours = (sequelize, DataTypes) => {
         type: DataTypes.STRING(1000),
         allowNull: true,
       },
-      tour_user_id: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-        references: {
-          model: "users",
-          key: "user_id",
-        },
-      },
+     
     },
     {
       sequelize,
@@ -66,7 +59,7 @@ const tours = (sequelize, DataTypes) => {
 
   //Create Join tour to tours_images
   Tours.associate = (models) => {
-    Tours.belongsTo(models.Users, { foreignKey: "tour_user_id" });
+    // Tours.belongsTo(models.Users, { foreignKey: "tour_user_id" });
 
     Tours.hasMany(models.Tours_Images, {
       foreignKey: "toim_tour_id",

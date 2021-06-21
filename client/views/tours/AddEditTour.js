@@ -204,7 +204,7 @@ export default function AddEditTour(props) {
                                                     type="text"
                                                     value={values.tour_package}
                                                     placeholder="Tour Package"
-                                                    onChange={handleChange('tour_tourpackage')}
+                                                    onChange={handleChange('tour_package')}
                                                     className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                                                 />
                                                 <div className="pt-3 ..."></div>
@@ -269,9 +269,9 @@ export default function AddEditTour(props) {
                                                     onChange={handleChange('tour_pesawat')}
                                                     className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                                                 >
-                                                    <option value="3">Garuda</option>
-                                                    <option value="4">Cathay</option>
-                                                    <option value="4">Nippon Air</option>
+                                                    <option >Garuda</option>
+                                                    <option >Cathay</option>
+                                                    <option >Nippon Air</option>
                                                 </select>
                                                 <div className="pt-3 ..."></div>
                                                 {/* ------------------------------------------------- */}

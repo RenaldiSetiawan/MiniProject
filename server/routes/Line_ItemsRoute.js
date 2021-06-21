@@ -11,6 +11,7 @@ router.post("/item/:id",IndexCtrl.UsersCtrl.cekUser,
                         IndexCtrl.Tours_CartCtrl.cekCart,
                         IndexCtrl.Tours_CartCtrl.create,
                         IndexCtrl.ToursCtrl.findOut,
+                        IndexCtrl.Line_ItemsCtrl.cekLite,
                         IndexCtrl.Line_ItemsCtrl.create);
 
 router.put("/item/:id", IndexCtrl.UsersCtrl.cekUser,

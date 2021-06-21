@@ -1,54 +1,51 @@
 import React, { useState, useEffect } from 'react'
-import { Link, Redirect, useHistory } from "react-router-dom";
-import { signin } from '../views/users/ApiUsers'
+import { Link, Redirect, useHistory, useLocation } from "react-router-dom";
+import { login } from '../views/action/userAction'
+import { useDispatch, useSelector } from 'react-redux';
 import auth from '../views/users/AuthHelper'
 
 export default function Login(props) {
 
+
+    const location = useLocation();
     const history = useHistory();
 
     const [values, setValues] = useState({
-        email: undefined,
-        password: undefined,
-        redirect: false,
-        error: ''
+        email: "",
+        password: "",
+        error: false
     });
+
+    const dispatch = useDispatch();
 
     const handleOnChange = name => event => {
         setValues({ ...values, [name]: event.target.value })
     }
 
-    const onSubmit = (e) => {
-        e.preventDefault();
-        const users = {
-            user_email: values.email || undefined,
-            user_password: values.password || undefined
-        }
+    const userLogin = useSelector((state) => state.userLogin);
+    const { userInfo } = userLogin;
 
-        signin(users).then((data) => {
-            if (data.error) {
-                setValues({ ...values, error: data.error })
-            } else {
-                auth.authenticate(data, () => {
-                    setValues({ ...values, error: '', redirect: true })
-                    setTour(data);
-                })
-            }
-        })
-    }
-
-
-    const [tours, setTour] = useState("");
     useEffect(() => {
-        if (values.redirect) {
-            /* console.log('redirect : '||{from}) */
-            if (tours.users.user_type === "admin") {
+        if (userInfo) {
+            const redirect = location.search
+                ? new URLSearchParams(location.search).get("redirect")
+                : "/tourtravel/landing"
+            if (userInfo.users.user_type === "admin") {
                 history.push("/tourtravel/tours");
             } else {
-                history.push("/tourtravel/landing");
+                history.push(redirect);
             }
         }
-    }, [tours]);
+    }, [userInfo, history]);
+
+
+    const onSubmit = (e) => {
+        e.preventDefault();
+
+        if (values.user_email && values.user_password) {
+            dispatch(login(values.user_email, values.user_password));
+        }
+    }
 
     return (
         <>
@@ -115,7 +112,7 @@ export default function Login(props) {
                                         <input
                                             type="text"
                                             autoComplete="email"
-                                            onChange={handleOnChange('email')}
+                                            onChange={handleOnChange('user_email')}
                                             required
                                             className="rounded px-4 w-full py-1 bg-gray-200  border border-gray-400 mb-6 text-gray-700 placeholder-gray-700 focus:bg-white focus:outline-none"
                                             placeholder="Email Address"
@@ -123,7 +120,7 @@ export default function Login(props) {
                                         <input
                                             type="password"
                                             autoComplete="current-password"
-                                            onChange={handleOnChange('password')}
+                                            onChange={handleOnChange('user_password')}
                                             required
                                             className="rounded px-4 w-full py-1 bg-gray-200  border border-gray-400 mb-4 text-gray-700 placeholder-gray-700 focus:bg-white focus:outline-none"
                                             placeholder="Password"

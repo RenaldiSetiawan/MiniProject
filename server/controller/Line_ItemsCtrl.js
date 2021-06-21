@@ -61,24 +61,25 @@ const updateLite = async (req, res) => {
   }
 }
 
-const create = async (req, res) => {
-  const tours = req.tours
-  let tours_cart;
-  if (req.cekCart) {
-    tours_cart = req.cekCart
-  } else {
-    tours_cart = req.tocart
-  }
-
+const create = async (req, res, next) => {
+ 
   try {
+    const tours = req.tours
+    const tours_cart= req.tocart || req.cekCart
+    const cekLite = req.liteitem
+    const price = tours.tour_price * req.body.lite_qty
+    if (!cekLite) { 
     const item = await req.context.models.Line_Items.create(
       {
         lite_qty: req.body.lite_qty,
         lite_status: 'cart',
         lite_tour_id: tours.tour_id,
         lite_toca_id: tours_cart.toca_id,
+        price: price
       })
-    return res.send(item)
+      return res.send(item)
+    }
+    return res.send("item Done")
   } catch (error) {
     return res.send(error);
   }
@@ -92,47 +93,6 @@ const remove = async (req, res) => {
   return res.send("Delete LineItems was Successful");
 };
 
-const createlite = async (req, res) => {
-  const cart = req.cart;
-  const tours = req.tours;
-  try {
-
-    const item = await req.context.models.Line_Items.create(
-      {
-        lite_qty: req.body.lite_qty,
-        lite_status: "open",
-        lite_tour_id: tours.tale_id,
-        lite_toca_id: cart.toca_id,
-      },
-      { returning: true, where: { lite_id: req.params.id } }
-    );
-
-    return res.send(item);
-  } catch (error) {
-    console.log(error);
-    return res.send(error);
-  }
-};
-
-// const createlineItem = async (req, res) => {
-//   try {
-//     const item = await req.context.models.Line_Items.create(
-//       {
-//         lite_qty: req.body.lite_qty,
-//         lite_status: "open",
-//         lite_tour_id: req.body.lite_tour_id,
-//         lite_toca_id: req.dataLine.toca_id,
-//         price: req.body.price,
-//       },
-//       { returning: true, where: { lite_id: req.params.id } }
-//     );
-
-//     return res.send(item);
-//   } catch (error) {
-//     console.log(error);
-//     return res.send(error);
-//   }
-// };
 
 export default {
   findAll,
@@ -142,6 +102,5 @@ export default {
   updateLite,
   create,
   remove,
-  // createlite,
-  // createlineItem
+ 
 };

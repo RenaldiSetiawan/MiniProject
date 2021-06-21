@@ -264,7 +264,7 @@ const cekUser = async (req, res, next) => {
     req.cekUser = users
     next()
   } catch (error) {
-
+    return res.status(500).send({message:`User ${error}`})
   }
 }
 

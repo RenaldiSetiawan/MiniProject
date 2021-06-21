@@ -33,10 +33,15 @@ export default function ToursImages() {
 
     const onDelete = async (id) => {
         ApiTours_Images.remove(id).then(() => {
+            
+            location.reload("/tourtravel/toursimages");
             setStatus(true)
         });
     }
 
+    if (toursimages) {
+        console.log(toursimages);
+    }
     return (
         <>
             <PageHeader title={'Tours Images'} actionType={'Add'} setModal={() => history.push('/tourtravel/toursimages/add')} />
@@ -106,8 +111,10 @@ export default function ToursImages() {
                                                             </span> */}
                                                             <span className="hidden sm:block">
                                                                 <button onClick={() => {
+                                                                
                                                                     if (window.confirm('Delete this record ?'))
                                                                         onDelete(row.toim_id)
+                                                                        location.reload("/tourtravel/toursimages");
                                                                 }}
                                                                     type="button"
                                                                     className="w-4 mr-2 transform hover:text-purple-500 hover:scale-110"

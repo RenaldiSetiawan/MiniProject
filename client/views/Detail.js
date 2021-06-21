@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from "react-router-dom";
 import NavigationBar from "../components/layout/NavigationBar"
 import Footer from "../components/layout/Footer"
 import ApiTours from "../views/tours/ApiTours"
 import ApiTours_Images from "../views/tours_images/ApiTours_Images"
+import { liteInput } from "../views/action/shopAction"
 
 export default function Detail({ match }) {
 
-    //find one Tours
     const [tours, setTours] = useState([])
     const [toursimages, setToursImages] = useState([])
 
@@ -20,6 +21,37 @@ export default function Detail({ match }) {
             })
     }, [])
 
+    const dispatch = useDispatch();
+    const userLogin = useSelector(state => state.userLogin)
+    const { userInfo } = userLogin
+    const [values, setValues] = useState({
+        user_id: undefined,
+        tour_id: undefined,
+        lite_qty: 1
+    })
+
+    const handleOnChange = (name) => (event) => {
+        setValues({ ...values, [name]: event.target.values })
+    }
+
+    const onSubmit = (e) => {
+        e.preventDefault();
+        const data = {
+            user_id: parseInt(userInfo.users.user_id),
+            tour_id: parseInt(tours.tour_id),
+            lite_qty: parseInt(values.lite_qty)
+        }
+        
+        console.log(data);
+
+        dispatch(liteInput(data)).then((result) => {
+            console.log(data);
+            window.location = "/tourtravel/cart"
+        })
+    }
+
+    
+
     return (
         <>
             <body className="antialiased bg-gray-100" x-data="{ isOpen : false}">
@@ -27,20 +59,20 @@ export default function Detail({ match }) {
                 <NavigationBar />
 
                 {/* <!-- component DETAIL --> */}
-                <div class="pl-10 pr-6 pt-6 rounded-tl-lg ">
+                <div class="md:pl-10 pr-6 pt-10 rounded-tl-lg ">
                     <div class="flex flex-wrap no-underline text-black h-64 overflow-hidden">
                         {/* <!-- component images --> */}
-                        <div class="w-8/12 h-full">
+                        <div class="md:w-8/12 h-full">
                             {tours.tours_images &&
                                 <img src={`/api/tours_images/photo/` + tours.tours_images[0].toim_filename}
                                     alt={`${tours.tour_id}`}
-                                    className="block pr-px w-full h-full rounded-l-lg bg-cover border-r-2"
+                                    className="block pr-px w-full h-full rounded-l-lg md:bg-cover border-r-2"
                                     style={{ minHeight: "60vh" }}
                                 />
                             }
                         </div>
                         {/* <!-- component images --> */}
-                        <div class="w-3/12 h-3/6">
+                        <div class="w-96 h-3/6">
                             {tours.tours_images &&
                                 <img src={`/api/tours_images/photo/` + tours.tours_images[1].toim_filename}
                                     alt={`${tours.tour_id}`}
@@ -48,8 +80,8 @@ export default function Detail({ match }) {
                                     style={{ minHeight: "39vh" }}
                                 />
                             }
-                        {/* <!-- component images --> */}
-                            <div class="bg-grey-darkest h-30">
+                            {/* <!-- component images --> */}
+                            <div class="h-30">
                                 {tours.tours_images &&
                                     <img src={`/api/tours_images/photo/` + tours.tours_images[2].toim_filename}
                                         alt={`${tours.tour_id}`}
@@ -115,15 +147,14 @@ export default function Detail({ match }) {
                         </div>
 
                         <p className="text-gray-500"> {tours.tour_description} </p>
-
-                        {/* List Hotel adn Pesawat*/}
+                        
                         <div className="flex py-4 space-x-4">
                             <div className="relative">
-                                <p className="text-gray-500 text-sm ">Hotel</p>
-                                <select className="cursor-pointer appearance-none rounded-xl border border-gray-200 pl-4 pr-8 h-14 flex items-end pb-1">
-                                    <option>3</option>
-                                    <option>4</option>
-                                </select>
+                                <p className="text-gray-500 text-sm " onChange={handleOnChange('lite_qty')}>QTY | Perperson</p>
+                                <input className="cursor-pointer appearance-none rounded-xl border border-gray-200 pl-4 pr-8 h-14 flex items-end pb-1"
+                                       type="number" />
+
+                               
                                 <svg className="w-5 h-5 text-gray-400 absolute right-0 bottom-0 mb-2 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"></svg>
                             </div>
 
@@ -136,14 +167,16 @@ export default function Detail({ match }) {
                                 </select>
                                 <svg className="w-5 h-5 text-gray-400 absolute right-0 bottom-0 mb-2 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"></svg>
                             </div>
-                            <Link to={"/tourtravel/cart/" + tours.tour_id}>
-                                <button type="button" className="w-5/6 h-1/2 px-2 py-2 font-semibold rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white">
-                                    Masukan Keranjang
-                                </button>
-                            </Link>
-                            <button type="button" className="h-14 px-6 py-2 font-semibold rounded-xl bg-red-600 hover:bg-red-600 text-white">
-                                Beli Sekarang
+
+                            <button type="button"
+                                className="h-14 px-6 py-2 font-semibold rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white"
+                                onClick={onSubmit}>
+                                Add to Cart
                             </button>
+
+                            {/* <button type="button" className="h-14 px-6 py-2 font-semibold rounded-xl bg-red-600 hover:bg-red-600 text-white">
+                                Beli Sekarang
+                            </button> */}
                         </div>
                     </div>
                 }
