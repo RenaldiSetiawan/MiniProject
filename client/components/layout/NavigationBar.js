@@ -15,11 +15,12 @@ export default function NavigationBar(props) {
     const onSubmit = () => {
         localStorage.clear();
         history.push(redirect)
+        window.location = "/tourtravel/login/"
     }
 
     return (
         <>
-            <header className="header  mb-50 bg-gray-800" >
+            <header className="header mb-50 bg-gray-800">
                 <div className="container px-4 sm:px-8 lg:px-16 xl:px-20 mx-auto">
                     <div className="header-wrapper flex items-center justify-between">
                         <Link to="/tourtravel/landing">

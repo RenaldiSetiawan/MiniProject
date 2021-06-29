@@ -32,37 +32,22 @@ const create = async (req, res) => {
 };
 
 // UPDATE
-const update = async (req, res) => {
-  const {
-    order_created_on,
-    order_total_children,
-    order_discount,
-    order_tax,
-    order_total_due,
-    order_total_qty,
-    order_payt_trx_number,
-    order_city,
-    order_address,
-    order_status,
-  } = req.body;
-  const orders = await req.context.models.Orders.update(
-    //nama atribut yang akan di update
-    {
-      order_created_on: order_created_on,
-      order_total_children: order_total_children,
-      order_discount: order_discount,
-      order_tax: order_tax,
-      order_total_due: order_total_due,
-      order_total_qty: order_total_qty,
-      order_payt_trx_number: order_payt_trx_number,
-      order_city: order_city,
-      order_addres: order_address,
-      order_status: order_status,
-    },
-    { returning: true, where: { order_name: req.params.id } }
-  );
-  return res.send(orders);
-};
+const update = async(req,res,next) =>{    
+  try {
+  const user = req.cekUser
+  const cekorder = req.cekOrd
+      if(cekorder){
+      const order = await req.context.models.Orders.update({
+          order_payt_trx_number:req.body.order_payt_trx_number,
+          order_status:'paid'
+      },{where: { order_user_id: user.user_id,order_name:cekorder.order_name}})
+      req.orders = order
+  }
+  next()
+  } catch (error) {
+      return res.status(500).json({message : "Order Error"+error})
+  }
+}
 
 // DELETE
 const remove = async (req, res) => {
@@ -145,36 +130,6 @@ const createOrd = async (req, res, next) => {
   }
 }
 
-/* const checkout = async(req, res)=>{
-  try {
-      const body = {
-          user_id: req.users.id,
-          order_name: req.body.order_name,
-          order_created_on: req.order_created_on,
-          tours_cart: req.body.tours_cart,
-          order_status: req.body.order_status,
-      }
-      await usecase.checkout(body)
-      res.status(200).json({
-          message: "success"
-      })
-  } catch (error) {
-      console.log("error", error)
-      res.status(500).json(error)
-  }
-} */
-
-/* const getAllOrdersByUsersId= async(req, res)=>{
-  try {
-      const data = await req.context.models.Orders.getAllOrdersByUsersId(req.users.id)
-      res.send(data)
-  } catch (error) {
-      console.log("asdf", error)
-      res.statusCode = 500
-      res.send(error)
-  }
-} */
-
 export default {
   findAll,
   findOne,
@@ -184,6 +139,4 @@ export default {
   payment,
   cekOrd,
   createOrd
-  /* checkout,
-  getAllOrdersByUsersId */
 };

@@ -291,21 +291,6 @@ export default function AddEditTour(props) {
                                                 />
                                                 <div className="pt-3 ..."></div>
                                                 {/* ------------------------------------------------- */}
-                                                <label
-                                                    htmlFor="first_name"
-                                                    className="block text-sm font-medium text-gray-700">
-                                                    Tour User Id
-                                                </label>
-                                                <input
-                                                    id="tour_user_id"
-                                                    name="tour_user_id"
-                                                    type="text"
-                                                    value={values.tour_user_id}
-                                                    placeholder="Tour User Id"
-                                                    onChange={handleChange('tour_user_id')}
-                                                    className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                                                />
-                                                <div className="pt-3 ..."></div>
                                             </form>
 
                                         </div>

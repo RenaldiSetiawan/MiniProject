@@ -6,7 +6,6 @@ import auth from '../views/users/AuthHelper'
 
 export default function Login(props) {
 
-
     const location = useLocation();
     const history = useHistory();
 
@@ -49,95 +48,101 @@ export default function Login(props) {
 
     return (
         <>
-            <header className="bg-cover min-h-screen"
-                style={{
-                    backgroundImage: `url("https://wallpaperaccess.com/full/254381.jpg")`
-                }}>
-                <div className="content px-8 py-2">
-                    <nav className="flex items-center justify-between">
-                        <h2 className="text-gray-200 font-bold text-2xl "></h2>
-                        <div className="auth flex items-center">
-                            <button className="bg-transparent text-gray-900  p-2 rounded border border-white mr-4 hover:bg-gray-100 hover:text-gray-900">
-                                Sign in
-                            </button>
-                            <button className="bg-transparent text-gray-900  p-2 rounded border border-white mr-4 hover:bg-gray-100 hover:text-gray-900">
-                                <Link to="/tourtravel/register">
-                                    Sign up for free
-                                </Link>
-                            </button>
-                        </div>
-                    </nav>
-
-                    <div className="body mt-10 mx-8">
-                        <div className="md:flex items-center justify-between">
-                            <div className="w-full md:w-1/2 mr-auto" >
-                                <h1 className="text-4xl font-bold text-white tracking-wide">
-                                    Tour Travel
-                                </h1>
-                                <h2 className=" text-2xl font-bold text-white tracking-wide">
-                                    Welcome
-                                    <span className="text-gray-900">
-                                        Back
-                                    </span>
-                                </h2>
-                                <p className="text-gray-300">
-                                    Gateway to great destination.
-                                </p>
-                                <span className="text-white">
-                                    Create New Account?
-                                    <a href="#" className="text-gray-900 text-lg ml-2 font-bold">
+            <header className="bg-cover min-h-screen">
+                <div class="w-full h-screen relative">
+                    <div class="absolute w-full h-full z-10 ">
+                        <div className="content px-8 py-2">
+                            <nav className="flex items-center justify-between">
+                                <h2 className="text-gray-200 font-bold text-2xl "></h2>
+                                <div className="auth flex items-center">
+                                    <button className="bg-transparent text-white p-2 rounded border border-white mr-4 hover:bg-gray-100 hover:text-gray-900">
+                                        Sign in
+                                    </button>
+                                    <button className="bg-transparent text-white p-2 rounded border border-white mr-4 hover:bg-gray-100 hover:text-gray-900">
                                         <Link to="/tourtravel/register">
-                                            Sign Up
+                                            Sign up for free
                                         </Link>
-                                    </a>
-                                </span>
-                            </div>
+                                    </button>
+                                </div>
+                            </nav>
 
-                            <div className="w-full md:max-w-md mt-6 opacity-80">
-                                <div className="card bg-white shadow-md rounded-lg px-4 py-4 mb-6 ">
-                                    {/* Component Sign */}
-                                    {values.error &&
-                                        <p class="text-red text-lg italic">{values.error}</p>}
-                                    <form className="mt-8 space-y-6" action="#" method="POST">
-                                        <input type="hidden" name="remember" defaultValue="true" />
-                                        <div className="flex items-center justify-center">
-                                            <h2 className="text-2xl font-bold tracking-wide">
-                                                Welcome back
-                                            </h2>
-                                        </div>
-                                        <h2 className="text-xl text-center font-semibold text-gray-800 mb-2">
-                                            Sign In
+                            <div className="body mt-14 mx-8">
+                                <div className="md:flex items-center justify-between">
+                                    <div className="w-full md:w-1/2 mr-auto">
+                                        <Link to="/tourtravel/landing">
+                                            <span className="text-6xl font-bold text-white tracking-wide font-serif">
+                                                Tour Travel
+                                            </span>
+                                        </Link>
+                                        <h2 className="text-5xl font-bold text-white tracking-wide font-serif">
+                                            Welcome
+                                            <span className="pl-3 text-yellow-500">
+                                                Back
+                                            </span>
                                         </h2>
+                                        <p className="text-4xl font-bold text-yellow-500">
+                                            Gateway to great destination.
+                                        </p>
+                                        <span className="text-4xl font-bold text-white tracking-wide font-serif">
+                                            Create New Account?
+                                            <Link to="/tourtravel/register" className="pl-3 text-4xl font-bold text-yellow-500 tracking-wide font-serif">
+                                                Sign Up
+                                            </Link>
+                                        </span>
+                                    </div>
 
-                                        <input
-                                            type="text"
-                                            autoComplete="email"
-                                            onChange={handleOnChange('user_email')}
-                                            required
-                                            className="rounded px-4 w-full py-1 bg-gray-200  border border-gray-400 mb-6 text-gray-700 placeholder-gray-700 focus:bg-white focus:outline-none"
-                                            placeholder="Email Address"
-                                        />
-                                        <input
-                                            type="password"
-                                            autoComplete="current-password"
-                                            onChange={handleOnChange('user_password')}
-                                            required
-                                            className="rounded px-4 w-full py-1 bg-gray-200  border border-gray-400 mb-4 text-gray-700 placeholder-gray-700 focus:bg-white focus:outline-none"
-                                            placeholder="Password"
-                                        />
-                                        <div className="flex items-center justify-between">
-                                            <a href="#" className="text-gray-600">Forget Password?</a>
-                                            <button className="bg-gray-800 text-gray-200  px-2 py-1 rounded"
-                                                type="submit"
-                                                onClick={onSubmit}>
-                                                Sign In
-                                            </button>
+                                    <div className="w-full md:max-w-md mt-16 opacity-70">
+                                        <div className="card bg-white shadow-md rounded-lg px-4 py-4 mb-6 ">
+                                            {values.error &&
+                                                <p class="text-red text-lg italic">{values.error}</p>}
+                                            <form className="mt-8 space-y-6" action="#" method="POST">
+                                                <input type="hidden" name="remember" defaultValue="true" />
+                                                <div className="flex items-center justify-center">
+                                                    <h2 className="text-2xl font-bold tracking-wide font-serif text-black">
+                                                        Welcome back
+                                                    </h2>
+                                                </div>
+                                                <h2 className="text-xl text-center font-semibold mb-2">
+                                                    Sign In
+                                                </h2>
+                                                <input
+                                                    type="text"
+                                                    autoComplete="email"
+                                                    onChange={handleOnChange('user_email')}
+                                                    required
+                                                    className="rounded px-4 w-full py-1 bg-gray-200  border border-gray-400 mb-6 text-black placeholder-gray-500 focus:bg-white focus:outline-none"
+                                                    placeholder="Email Address"
+
+                                                />
+                                                <input
+                                                    type="password"
+                                                    autoComplete="current-password"
+                                                    onChange={handleOnChange('user_password')}
+                                                    required
+                                                    className="rounded px-4 w-full py-1 bg-gray-200  border border-gray-400 mb-4 text-gray-700 placeholder-gray-700 focus:bg-white focus:outline-none"
+                                                    placeholder="Password"
+                                                />
+                                                <div className="flex items-center justify-between">
+                                                    <button className="bg-gray-900 text-white px-2 py-1 rounded"
+                                                        type="submit"
+                                                        onClick={onSubmit}>
+                                                        Sign In
+                                                    </button>
+                                                </div>
+                                            </form>
                                         </div>
-                                    </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div class="absolute w-full h-64 bottom-0 bg-gradient-to-t from-black">
+                    </div>
+                    <video class="w-full h-64 lg:h-screen object-cover" loop autoPlay muted >
+                        <source class="h-screen object-contain"
+                            src="https://file-examples-com.github.io/uploads/2017/04/file_example_MP4_1280_10MG.mp4"
+                            type="video/mp4" />
+                    </video>
                 </div>
             </header>
         </>

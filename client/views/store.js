@@ -2,8 +2,8 @@ import { createStore, compose, applyMiddleware, combineReducers } from "redux";
 import { composeWithDevTools} from "redux-devtools-extension";
 import thunk from "redux-thunk" ;
 import { toimCreate } from './reducer/tours_imagesReducer'
-import { userRegisterReducer, userLoginReducer } from './reducer/usersReducer'
-import { liteCreateReducer, orderCreateReducer } from './reducer/shopReducer'
+import { userRegisterReducer, userLoginReducer, userListOneReducer} from './reducer/usersReducer'
+import { liteCreateReducer, orderCreateReducer, komenCreateReducer } from './reducer/shopReducer'
 
 
 const initialState = {
@@ -21,8 +21,11 @@ const reducer = combineReducers({
     toimCreate: toimCreate,
     userRegisterReducer: userRegisterReducer,
     userLogin: userLoginReducer,
+    userListOne:userListOneReducer,
     liteShop: liteCreateReducer,
     orderCreate:orderCreateReducer,
+    komenCreate: komenCreateReducer,
+
 
 })
 

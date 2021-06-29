@@ -65,10 +65,10 @@ export default function Tour() {
         <div>
             <PageHeader title={'Tours'} setModal={() => onCreate()} />
             
-            <div className="pt-1 ..."></div> {/*batas spasi */}
+            <div className="pt-1 ..."></div>
 
             <div className="flex flex-col">
-                <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-4"> {/*ROW TABEL */}
+                <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-4">
                     <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
                         <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
                             

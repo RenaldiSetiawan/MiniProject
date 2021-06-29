@@ -11,7 +11,7 @@
     "reverse:db": "sequelize-auto -o ./schema-reverse -d ApiTourTravel -h localhost -u postgres -p 5432 -x admin -e postgres"
   },
   "dependencies": {
-    "@headlessui/react": "^1.2.0",
+    "@headlessui/react": "^1.3.0",
     "@heroicons/react": "^1.0.1",
     "@hot-loader/react-dom": "^17.0.1",
     "@popperjs/core": "^2.9.0",

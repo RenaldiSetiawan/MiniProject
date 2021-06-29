@@ -19,7 +19,7 @@ export default function Footer() {
             </ul>
             <div className="flex mx-auto text-white text-center">
               Copyright Tour Travel © 2021
-                            </div>
+            </div>
           </div>
         </footer>
       </div>

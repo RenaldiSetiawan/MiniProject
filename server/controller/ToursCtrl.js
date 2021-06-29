@@ -1,5 +1,7 @@
 import formidable from "formidable";
 import fs from 'fs'
+//Search
+import { Op } from 'sequelize'
 
 const pathDir = __dirname + '../../uploads/';
 
@@ -10,34 +12,7 @@ const defaultPhoto = (req, res) => {
 
 // findAll = select * table
 const findAll = async (req, res) => {
-  
-  // const currentPage = req.query.page || 1;
-  //   const perPage = req.query.perPage || 5;
-  //     let totalItems;
-      
-  //     tours.findAll()
-  //     .countDocuments()
-  //     .then(count => {
-  //       totalItems = count;
-  //       return tours.findAll()
-  //       .skip((currentPage - 1) * perPage)
-  //       .limit(perPage);
-  //     })
-  //     .then( result => {
-  //       res.status(200).json({
-  //         message: 'Data Berhasil dipanggil', 
-  //         data: result,
-  //         total_data: totalItems,
-  //         per_page: perPage,
-  //         current_page: currentPage
-  //       })
-  //     })
-  //     .catch(err => {
-  //       next(err);
-  //     })
-
   const tours = await req.context.models.Tours.findAll({
-    
     include: [
       {
         all: true,
@@ -53,6 +28,22 @@ const findAll = async (req, res) => {
   });
   return res.send(tours);
 };
+
+//Search
+const findAllSearch = async (req, res) => {
+  console.log(req.query)
+  const {tour_name} = req.query
+  console.log(tour_name)
+  const tours = await req.context.models.Tours.findAll(
+  
+  { where : {tour_name: {[Op.iLike]: `%${tour_name}%`}},
+      include: [{
+          model: req.context.models.Tours_Images
+      }],
+  }
+  );
+  return res.send(tours);
+}
 
 // find region by id
 const findOne = async (req, res) => {
@@ -149,6 +140,7 @@ const findOut = async (req, res, next) => {
 }
 
 
+
 export default {
   findAll,
   findOne,
@@ -156,5 +148,6 @@ export default {
   update,
   remove,
   findOut,
-  defaultPhoto
+  defaultPhoto,
+  findAllSearch
 };

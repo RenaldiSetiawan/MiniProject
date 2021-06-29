@@ -2,7 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { Link } from "react-router-dom";
 import NavigationBar from "../components/layout/NavigationBar"
 import Footer from "../components/layout/Footer"
+import Star from "../components/layout/Star"
 import ApiTours from "../views/tours/ApiTours"
+import { searchTour } from './action/toursAction';
+import { useDispatch } from 'react-redux';
+
 
 export default function Landing() {
 
@@ -17,15 +21,34 @@ export default function Landing() {
     if (tours) {
         console.log(tours);
     }
+
+    //Search
+    const dispatch = useDispatch();
+
+    const handleOnchange = (name) => (event) => {
+        setValues({ ...values, [name]: event.target.value });
+    }
+
+    const [values, setValues] = useState({
+        tour_name: undefined
+    });
+
+    const onSubmit = (e) => {
+        e.preventDefault();
+        console.log(values.tour_name)
+        dispatch(searchTour(values.tour_name)).then((result) => {
+        });
+    }
+
     return (
         <>
-            <body className="antialiased" x-data="{ isOpen : false}">
+            <body className="antialiased" x-data="{ isOpen : false }">
                 <NavigationBar />
-                {/* BG Home */}
                 <div className="hero bg-fixed bg-cover py-32"
                     style={{
                         backgroundImage: `url("https://www.concadelsogno.it/uploads/gallery/images/2_093268aaaff584d1de1f0cba072b513d.jpg")`
                     }}>
+                        
                     <div className="container sm:px-8 lg:px-16 xl:px-20 mx-auto">
                         <div className="hero-wrapper grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
                             <div className="hero-text col-span-6 pb-20">
@@ -74,10 +97,25 @@ export default function Landing() {
                     <div className="relative items-center justify-center pt-15">
                         <h1 className="text-center text-2xl font-bold p-4 bg-gray-800 text-gray-200">
                             Choose Your Next Tour
+                            <input type="search"
+                                name="search"
+                                id="search"
+                                placeholder="Search"
+                                class="appearance-none w-full rounded-lg outline-none focus:outline-none active:outline-none text-gray-900"
+                                onChange={handleOnchange('tour_name')}
+                            />
+                            <button type="submit" class="ml-1 outline-none focus:outline-none active:outline-none"
+                                onClick={onSubmit}>
+                                <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    viewBox="0 0 24 24" class="w-6 h-6 pt-1">
+                                    <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                </svg>
+                            </button>
                         </h1>
                     </div>
                 </div>
-                <div class="bg-gray-300 bg-cover flex flex-wrap justify-center items-center gap-3 py-5 ">
+
+                <div class="bg-gray-300 bg-cover flex flex-wrap justify-center items-center gap-3 py-5">
                     {/* Tour componnets*/}
                     {tours && tours.map((row, index) => {
                         return (
@@ -89,24 +127,7 @@ export default function Landing() {
                                                 {row.tour_name}
                                             </h1>
                                             {/* Bintang Review */}
-                                            <span class="flex items-center">
-                                                <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 text-red-500" viewBox="0 0 24 24">
-                                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
-                                                </svg>
-                                                <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 text-red-500" viewBox="0 0 24 24">
-                                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
-                                                </svg>
-                                                <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 text-red-500" viewBox="0 0 24 24">
-                                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
-                                                </svg>
-                                                <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 text-red-500" viewBox="0 0 24 24">
-                                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
-                                                </svg>
-                                                <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 text-red-500" viewBox="0 0 24 24">
-                                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
-                                                </svg>
-                                            </span>
-
+                                            <Star />
                                             <div class="flex items-center mt-4 text-black font-semibold" >
                                                 <svg class="h-6 w-6 fill-current" viewBox="0 0 512 512">
                                                     <path d="M256 32c-88.004 0-160 70.557-160 156.801C96 306.4 256 480 256 480s160-173.6 160-291.199C416 102.557 344.004 32 256 32zm0 212.801c-31.996 0-57.144-24.645-57.144-56 0-31.357 25.147-56 57.144-56s57.144 24.643 57.144 56c0 31.355-25.148 56-57.144 56z" />
@@ -116,13 +137,12 @@ export default function Landing() {
                                                 </h1>
                                             </div>
                                         </div>
-
                                         {/* TOUR IMAGES */}
                                         <img src={require("../../uploads/" + row.tours_images[2].toim_filename).default}
                                             alt={`${row.tour_id}`}
                                             className="rounded-t w-full h-30v md:overflow-hidden object-cover"
                                         />
-                                        
+
                                         <div class="flex items-center justify-between px-4 py-2 bg-gray-900">
                                             <h1 class="text-gray-200 font-bold text-xl">
                                                 {row.tour_price.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')}
@@ -138,33 +158,52 @@ export default function Landing() {
                         )
                     })}
                 </div>
-                {/* Pagination */}
-                <div className="bg-gray-300 bg-cover flex flex-wrap justify-center items-center gap-3 py-5 ">
-                    <ul class="flex">
-                        <li class="mx-1 px-3 py-2 bg-white text-gray-900 hover:bg-gray-700 hover:text-gray-200 rounded-lg">
-                            <a class="flex items-col font-bold" href="#">
-                                <span class="mx-1">previous</span>
-                            </a>
-                        </li>
-                        <li class="mx-1 px-3 py-2 bg-white text-gray-900 hover:bg-gray-700 hover:text-gray-200 rounded-lg">
-                            <a class="font-bold" href="#">1</a>
-                        </li>
-                        <li class="mx-1 px-3 py-2 bg-white text-gray-900 hover:bg-gray-700 hover:text-gray-200 rounded-lg">
-                            <a class="font-bold" href="#">2</a>
-                        </li>
-                        <li class="mx-1 px-3 py-2 bg-white text-gray-900 hover:bg-gray-700 hover:text-gray-200 rounded-lg">
-                            <a class="font-bold" href="#">3</a>
-                        </li>
-                        <li class="mx-1 px-3 py-2 bg-white text-gray-900 hover:bg-gray-700 hover:text-gray-200 rounded-lg">
-                            <a class="flex items-center font-bold" href="#">
-                                <span class="mx-1">Next</span>
-                            </a>
-                        </li>
-                    </ul>
+
+                <div class="bg-gray-300 bg-cover flex flex-wrap justify-center items-center gap-3 py-5">
+
+                    {tours.searching &&
+                        tours.searching.map((row, index) => {
+                            return (
+                                <tr key={index}>
+                                    <Link to={"/tourtravel/detail/" + row.tour_id}>
+                                        <div class="w-60 h-1/2 bg-cover bg-white shadow-lg rounded-lg overflow-hidden my-1">
+                                            <div class="px-4 py-2">
+                                                <h1 class="text-gray-900 font-bold text-2xl uppercase">
+                                                    {row.tour_name}
+                                                </h1>
+                                                {/* Component Star */}
+                                                <Star />
+                                                <div class="flex items-center mt-4 text-black font-semibold" >
+                                                    <svg class="h-6 w-6 fill-current" viewBox="0 0 512 512">
+                                                        <path d="M256 32c-88.004 0-160 70.557-160 156.801C96 306.4 256 480 256 480s160-173.6 160-291.199C416 102.557 344.004 32 256 32zm0 212.801c-31.996 0-57.144-24.645-57.144-56 0-31.357 25.147-56 57.144-56s57.144 24.643 57.144 56c0 31.355-25.148 56-57.144 56z" />
+                                                    </svg>
+                                                    <h1 class="px-2 text-sm">
+                                                        {row.tour_route}
+                                                    </h1>
+                                                </div>
+                                            </div>
+                                            {/* TOUR IMAGES */}
+                                            <img src={require("../../uploads/" + row.tours_images[2].toim_filename).default}
+                                                alt={`${row.tour_id}`}
+                                                className="rounded-t w-full h-30v md:overflow-hidden object-cover"
+                                            />
+                                            <div class="flex items-center justify-between px-4 py-2 bg-gray-900">
+                                                <h1 class="text-gray-200 font-bold text-xl">
+                                                    {row.tour_price.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')}
+                                                </h1>
+                                                <button class="w-16 h-8 px-3 py-1 bg-gray-200 text-sm text-gray-900 font-semibold rounded bg-cover"
+                                                    onClick={() => addToCart(tours + id)}>
+                                                    Detail
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </Link>
+                                </tr>
+                            );
+                        })}
                 </div>
                 <Footer />
             </body>
-
         </>
     );
 }

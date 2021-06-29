@@ -7,6 +7,9 @@ import {
     USER_LOGIN_SUCCESS,
     USER_LOGIN_FAIL,
     
+    USER_FINDONE_REQUEST,
+    USER_FINDONE_SUCCESS,
+    USER_FINDONE_FAIL
 } from '../constants/usersConstants'
 
 export const userRegisterReducer = (state = {}, action) => {
@@ -33,5 +36,18 @@ export const userLoginReducer = (state = {}, action) => {
             return { loading: false, error: action.payload }
         default:
             return state;
+    }
+}
+
+export const userListOneReducer = (state = {}, action) => {
+    switch(action.type){
+        case USER_FINDONE_REQUEST:
+            return {loading:true}
+        case USER_FINDONE_SUCCESS: 
+            return {loading:true, user:action.payload}
+        case USER_FINDONE_FAIL:
+            return {loading:false, error:action.payload}
+        default:
+            return state
     }
 }

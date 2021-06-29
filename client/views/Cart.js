@@ -4,11 +4,13 @@ import NavigationBar from "../components/layout/NavigationBar"
 import Footer from "../components/layout/Footer"
 import ApiLineItems from "./lineitems/ApiLineItems"
 import ApiTours from "../views/tours/ApiTours"
+import ApiCart from './cart/ApiCart';
 
 export default function Cart() {
 
     const [lite, setLite] = useState([])
     const [tours, setTours] = useState([])
+    const [cart, setCart] = useState([])
 
     useEffect(() => {
         ApiTours.list().then(data => {
@@ -19,24 +21,32 @@ export default function Cart() {
             setLite(data)
         })
 
+        ApiCart.list().then(data => {
+            setCart(data)
+        })
+
     }, [])
 
     const onDelete = async (lite_id) => {
         ApiLineItems.remove(lite_id).then(result => {
-            location.reload="/tourtravel/cart";
+            location.reload();
             console.log(result);
             setStatus(true)
         })
     }
 
 
-    // if (lite) {
-    //     console.log(lite);
-    // }
+    if (lite) {
+        console.log(lite);
+    }
 
-    // if (tours) {
-    //     console.log(tours);
-    // }
+    if (tours) {
+        console.log(tours);
+    }
+
+    if (cart) {
+        console.log(cart);
+    }
 
     // cek array
     // const onClick = () => {
@@ -46,104 +56,84 @@ export default function Cart() {
     return (
         <>
             <NavigationBar />
-            {/* <!-- COMPONENT CART--> */}
-            <div class="flex justify-center my-10 pb-40 ">
-                {/* <div><button onClick={onClick}>Check</button></div> */}
-                <div class="flex flex-col w-full p-8 text-gray-800 bg-gray-200 shadow-lg pin-r pin-y md:w-4/5 lg:w-4/5">
-                    <div class="flex-1">
-                        <table class="w-full text-sm lg:text-base" cellspacing="0">
-                            <thead>
-                                <tr class="h-12 uppercase">
-                                    <th class="hidden md:table-cell"></th>
-                                    <th class="text-left">
-                                        Product
-                                    </th>
-                                    <th class="lg:text-right text-left pl-5 lg:pl-0">
-                                        <span class="lg:hidden" title="Quantity">Qty</span>
-                                        <span class="hidden lg:inline">Quantity</span>
-                                    </th>
-                                    <th class="text-right">
-                                        Total price
-                                    </th>
-                                </tr>
-                            </thead>
+            {/* <!-- component --> */}
+            <div class="bg-gray-300 pb-96 pt-8 h-screen w-screen">
+                {lite && lite.map((row, index) => {
+                    const item = tours && tours.find(x => x.tour_id === row.lite_tour_id)
+                    const qty = lite && lite.find(x => x.lite_id === row.lite_id)
+                    return (
+                        <tr key={index}>
+                            <div class="grid grid-cols-12 gap-6 ml-60">
+                                <div class="col-span-12 lg:col-span-8 ">
+                                    <div class="bg-white py-4 px-4 shadow-xl rounded-lg my-4 mx-4 h- h-20v">
+                                        <div class="flex justify-between px-4 items-center">
+                                         
+                                            <img src={item && "/api/tours_images/photo/" + item.tours_images[2].toim_filename} 
+                                             className="block pr-px w-40 h-30 rounded-lg bg-cover"/>
+                                            
+                                            <div class="text-lg font-semibold pl-16">
+                                                <p class="pr-28 font-serif">Product:</p>
+                                                <h3 className="font-mono underline">{item && item.tour_name}</h3>
+                                            </div>
 
-                            <tbody>
-                                {lite && lite.map((row, index) => {
-                                    const item = tours && tours.find(x => x.tour_id === row.lite_tour_id)
-                                    const qty = lite && lite.find(x => x.lite_id === row.lite_id)
-                                    return (
-                                        <tr>
-                                            <td class="hidden pb-4 md:table-cell">
-                                                <a href="#">
-                                                    {
-                                                        item.tours_images &&
-                                                        <img src={`/api/tours_images/photo/` + item.tours_images[2].toim_filename}
-                                                            alt={`${tours.toim_id}`}
-                                                            className="block pr-px w-40 h-30 rounded-lg bg-cover"
-                                                        />
-                                                    }
-                                                </a>
-                                            </td>
-                                            <td>
-                                                <a href="#">
-                                                    <p class="mb-2 md:ml-4">
-                                                        {item && item.tour_name}
-                                                    </p>
-                                                    <form action="" method="DELETE">
-                                                        <button type="submit"
-                                                            class="text-red-600 md:ml-4"
-                                                            onClick={() => {
-                                                                
-                                                                if ( window.confirm ( "Are you sure you wish to delete this item?")
-                                                                
-                                                                )
-                                                                    onDelete(row.lite_id)
-                                                            }}>
-                                                            <small>Delete Item</small>
-                                                        </button>
-                                                    </form>
-                                                </a>
-                                            </td>
-
-                                            <td class="justify-center md:justify-end md:flex mt-6">
-                                                <div class="w-20 h-10">
-                                                    <div class="relative flex flex-row w-full h-8">
-                                                        {qty && qty.lite_qty}
-                                                    </div>
+                                            <form action="" method="DELETE">
+                                                <div class="text-lg font-semibold pl-10">
+                                                    <button type="submit"
+                                                        class="focus:outline-none bg-red-600 text-white font-bold py-2 px-2 rounded-full inline-flex items-center"
+                                                        onClick={() => {
+                                                            location.reload();
+                                                            if (window.confirm("Are you sure you wish to delete this item?")
+                                                            )
+                                                                onDelete(row.lite_id)
+                                                        }}>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                        </svg>
+                                                    </button>
                                                 </div>
-                                            </td>
-
-                                            <td class="text-right">
-                                                <span class="text-sm lg:text-base font-medium">
-                                                    {item && item.tour_price.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')}
-                                                </span>
-                                            </td>
-                                            <hr></hr>
-                                        </tr>
-                                    )
-                                })
-                                }
-                            </tbody>
-                        </table>
-
-                        {/* <div class="flex justify-between pt-4 border-b">
-                            <div class="lg:px-4 lg:py-2 m-2 text-lg lg:text-xl font-bold text-center text-gray-800">
-                                Total
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-span-12 sm:col-span-12 md:col-span-5 lg:col-span-4 xxl:col-span-4 ">
+                                    <div class="bg-white py-4 px-4 shadow-xl rounded-lg my-4 mx-4">
+                                        {/* <!-- classic add --> */}
+                                        <div class="flex justify-between border-b-4 border-red-600 mb-2">
+                                            <div class="text-lg py-2 font-serif font-semibold">
+                                                <p>Number of people</p>
+                                            </div>
+                                            <div class="text-lg py-2">
+                                                <div class="flex flex-row space-x-2 w-full items-center rounded-lg">
+                                                    <p>{qty && qty.lite_qty}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {/* <!-- End classic add --> */}
+                                        {/* <!-- Total Item --> */}
+                                        <div class="flex justify-between">
+                                            <div class="text-lg py-2 font-semibold font-serif">
+                                                <p>Price</p>
+                                            </div>
+                                            <div class="text-lg py-2">
+                                                <div class="flex flex-row space-x-2 w-full items-center rounded-lg font-mono">
+                                                    <p>Rp {item && item.tour_price.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {/* <!-- End Total Item --> */}
+                                    </div>
+                                </div>
                             </div>
-                            <div class="lg:px-4 lg:py-2 m-2 lg:text-lg font-bold text-center text-gray-900">
-                                17,859.3€
-                            </div>
-                        </div> */}
-                        
-                            <Link to="/tourtravel/order">
-                            <button class="flex justify-center w-full px-10 py-3 mt-6 font-medium text-white uppercase bg-gray-800 rounded-full shadow item-center hover:bg-gray-700 focus:shadow-outline focus:outline-none">
-                                <svg aria-hidden="true" data-prefix="far" data-icon="credit-card" class="w-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path fill="currentColor" d="M527.9 32H48.1C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48.1 48h479.8c26.6 0 48.1-21.5 48.1-48V80c0-26.5-21.5-48-48.1-48zM54.1 80h467.8c3.3 0 6 2.7 6 6v42H48.1V86c0-3.3 2.7-6 6-6zm467.8 352H54.1c-3.3 0-6-2.7-6-6V256h479.8v170c0 3.3-2.7 6-6 6zM192 332v40c0 6.6-5.4 12-12 12h-72c-6.6 0-12-5.4-12-12v-40c0-6.6 5.4-12 12-12h72c6.6 0 12 5.4 12 12zm192 0v40c0 6.6-5.4 12-12 12H236c-6.6 0-12-5.4-12-12v-40c0-6.6 5.4-12 12-12h136c6.6 0 12 5.4 12 12z" /></svg>
-                                <span class="ml-2 mt-5px">Order now</span>
-                            </button>
-                            </Link>
-                    </div>
-                </div>
+                        </tr>
+                    )
+                })
+                }
+                <Link to="/tourtravel/order">
+                    <button class="flex justify-center w-4/6 py-3 mt-2 mx-60 font-bold text-black uppercase bg-gray-100 rounded-full shadow item-center focus:shadow-outline focus:outline-none">
+                        <svg aria-hidden="true" data-prefix="far" data-icon="credit-card" class="w-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path fill="currentColor" d="M527.9 32H48.1C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48.1 48h479.8c26.6 0 48.1-21.5 48.1-48V80c0-26.5-21.5-48-48.1-48zM54.1 80h467.8c3.3 0 6 2.7 6 6v42H48.1V86c0-3.3 2.7-6 6-6zm467.8 352H54.1c-3.3 0-6-2.7-6-6V256h479.8v170c0 3.3-2.7 6-6 6zM192 332v40c0 6.6-5.4 12-12 12h-72c-6.6 0-12-5.4-12-12v-40c0-6.6 5.4-12 12-12h72c6.6 0 12 5.4 12 12zm192 0v40c0 6.6-5.4 12-12 12H236c-6.6 0-12-5.4-12-12v-40c0-6.6 5.4-12 12-12h136c6.6 0 12 5.4 12 12z" /></svg>
+                        <span class="ml-2 mt-5px font-serif">Checkout</span>
+                    </button>
+                </Link>
             </div>
             {/* <!-- END COMPONENT --> */}
             <Footer />

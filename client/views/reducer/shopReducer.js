@@ -3,6 +3,10 @@ import {
     LITE_INPUT_SUCCESS,
     LITE_INPUT_FAIL,
 
+    KOMEN_INPUT_REQUEST,
+    KOMEN_INPUT_SUCCESS,
+    KOMEN_INPUT_FAIL,
+
     ORDER_INPUT_REQUEST,
     ORDER_INPUT_SUCCESS,
     ORDER_INPUT_FAIL
@@ -19,6 +23,19 @@ export const liteCreateReducer = (state = {}, action) => {
         default:
             return state;
     }
+}
+
+export const komenCreateReducer = (state = {}, action) => {
+  switch (action.type) {
+      case KOMEN_INPUT_REQUEST:
+          return { loading: true };
+      case KOMEN_INPUT_SUCCESS:
+          return { loading: false, komenRegis: action.payload }
+      case KOMEN_INPUT_FAIL:
+          return { loading: false, error: action.payload }
+      default:
+          return state;
+  }
 }
 
 export const orderCreateReducer = (state = {}, action) =>{

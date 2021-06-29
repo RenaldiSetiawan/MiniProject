@@ -10,5 +10,7 @@ router.get("/:id", IndexCtrl.ToursCtrl.findOne);
 router.put("/:id", IndexCtrl.ToursCtrl.update); 
 router.delete("/:id", IndexCtrl.ToursCtrl.remove);
 
+router.get('/search/tour', IndexCtrl.ToursCtrl.findAllSearch);
+
 
 export default router;

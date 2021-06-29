@@ -8,6 +8,11 @@ import {
     USER_LOGIN_REQUEST,
     USER_LOGIN_SUCCESS,
     USER_LOGIN_FAIL,
+
+    USER_FINDONE_REQUEST,
+    USER_FINDONE_SUCCESS,
+    USER_FINDONE_FAIL,
+
 } from '../constants/usersConstants'
 
 // register
@@ -51,3 +56,20 @@ export const login = (email, password) => async (dispatch) => {
         });
     }
 }
+
+//Find One User
+export const findOneUser =(id)=> async(dispatch)=>{
+    dispatch({
+        type: USER_FINDONE_REQUEST
+    })
+    try {
+        const {data} = await axios.get(`/api/users/${id}`)
+        dispatch({type: USER_FINDONE_SUCCESS, payload:data})
+    } catch (error) {
+        dispatch({
+            type: USER_FINDONE_FAIL,
+            payload: error.response && error.response.data.message
+            ? error.response.data.message : error.message
+        })
+    }
+  }
