@@ -23,6 +23,7 @@ export default function MainLayout(props) {
   const onSubmit = () => {
     localStorage.clear();
     history.push(redirect);
+    window.location.reload();
   }
 
   return (

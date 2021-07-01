@@ -53,7 +53,6 @@ export default function Landing() {
                         <div className="hero-wrapper grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
                             <div className="hero-text col-span-6 pb-20">
                                 <h1 className=" font-bold text-4xl md:text-5xl max-w-xl text-white leading-tight">Don't listen to what they say, Go See</h1>
-                                <hr className=" w-12 h-1 bg-orange-500 rounded-full mt-8" />
                                 <p className="text-white text-base leading-relaxed mt-2 font-semibold">Your ultimate travel companion. Carries all the information you need while travelling</p>
 
                                 <div className="get-app">
